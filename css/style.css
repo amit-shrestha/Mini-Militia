@@ -1,0 +1,5 @@
+#canvas{
+  background: url("../images/background.jpg");
+  background-size: contain;
+  cursor: url("../images/gun-target.png"), pointer;
+}

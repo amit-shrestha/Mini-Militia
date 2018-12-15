@@ -7,13 +7,14 @@ function Actor(ctx, assets, detectCollision){
   this.key = {};
   this.property = {};
   this.handProperty = {};
+  this.bulletArray = [];
   this.mainInterval;
   this.rightFace = true;
   this.spriteIndexX = 0;
   this.spriteIndexY = 0;
   this.counter = 0;
   this.jetFuelCounter = 0;
-  this.angle = 0;
+  
   this.init = function(){
     that.property = {
       spriteX: [0, 95, 190, 285],
@@ -27,7 +28,7 @@ function Actor(ctx, assets, detectCollision){
       canvasX: 30,
       canvasY: 16*BLOCK_SIZE+5-120,
       jetFuel: 10
-    };
+    }
     that.handProperty = {
       x: 20,
       y: that.property.characterHeight/2.2,
@@ -50,6 +51,11 @@ function Actor(ctx, assets, detectCollision){
       that.ctx.drawImage(that.assets.getImage('character-sprite-left'), that.property.spriteX[that.spriteIndexX], that.property.spriteY[that.spriteIndexY], that.property.spriteWidth, that.property.spriteHeight, that.property.canvasX, that.property.canvasY, that.property.characterWidth, that.property.characterHeight);
     }
     that.drawHand();
+    if(that.bulletArray.length >=0 ){
+      for(var i=0;i<that.bulletArray.length;i++){
+        that.bulletArray[i].init();
+      }
+    }
   }
 
   this.move = function(){
@@ -119,7 +125,7 @@ function Actor(ctx, assets, detectCollision){
         } 
       }
     }
-    console.log(that.property.jetFuel);
+    // console.log(that.property.jetFuel);
   }
 
   this.keyPressed = function(event){
@@ -175,13 +181,33 @@ function Actor(ctx, assets, detectCollision){
 
   this.mouseMoved = function(event){
     var dx = event.clientX - (that.property.canvasX+that.handProperty.x);
-    var dy = event.clientY - (that.property.canvasY+that.handProperty.y);
+    var dy = event.clientY - (that.property.canvasY+that.handProperty.y-10);
     that.angle = Math.atan2(dy, dx);
     var degree = that.angle*180/Math.PI;
     if(degree<0 && degree<-90 || degree>0 && degree>90){
       that.rightFace = false;
     }else{
       that.rightFace = true;
+    }
+  }
+
+  this.mouseClicked = function(event){
+    if(event.button === 0){
+      var bulletObj ={
+        ctx: that.ctx,
+        actor: that,
+        positionToX: event.clientX,
+        positionToY: event.clientY,
+        angle: that.angle,
+        face: that.rightFace
+      }
+      that.bulletArray.push(new Bullet(bulletObj));
+    }
+  }
+
+  this.mouseUnclicked = function(event){
+    if(event.button === 0){
+      // that.initiateFire = false;
     }
   }
 

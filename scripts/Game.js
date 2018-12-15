@@ -6,6 +6,7 @@ function Game(assets){
   this.actor;
   this.assets = assets;
   this.detectCollision;
+  this.weapon;
   this.gameAnimation;
   this.init = function(){
     this.canvas = document.getElementById('canvas');
@@ -13,9 +14,12 @@ function Game(assets){
     this.map = new Map(this.ctx, assets);
     this.detectCollision = new DetectCollision(that.ctx, that.map.mapArray);
     this.actor = new Actor(this.ctx, assets, this.detectCollision);
+
     that.initializePressListener();
     that.initializeReleaseListener();
     that.initializeMouseEventListener();
+    that.initializeMouseClickListener();
+    that.initializeMouseUnclickListener();
     this.run();
   }
 
@@ -50,6 +54,15 @@ function Game(assets){
   this.initializeMouseEventListener = function(){
     document.addEventListener("mousemove", this.actor.mouseMoved);
   }
+
+  this.initializeMouseClickListener = function(){
+    document.addEventListener("mousedown", this.actor.mouseClicked);
+  }
+
+  this.initializeMouseUnclickListener = function(){
+    document.addEventListener("mouseup", this.actor.mouseUnclicked);
+  }
+
   this.init();
 }
 

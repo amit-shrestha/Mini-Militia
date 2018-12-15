@@ -8,30 +8,31 @@ function Bullet(bulletParameters){
   this.positionToY = this.bulletParameters.positionToY;
   this.angle = this.bulletParameters.angle;
   this.face = this.bulletParameters.face;
-  if(that.face === true){
-    this.initialX = 130;
-  }
-  else{
-    this.initialX = 100;
-  }
-  this.initialY = 0;
+  this.initialX = that.actor.property.canvasX+that.actor.handProperty.x;
+  this.initialY = that.actor.property.canvasY+that.actor.handProperty.y;
+  this.vx = Math.cos(that.angle);
+  this.vy = Math.sin(that.angle);
+
   this.init = function(){
-    that.ctx.lineWidth = 10;
+    that.ctx.lineWidth = 2;
     that.ctx.save();
     that.ctx.beginPath();
-    that.ctx.translate(that.actor.property.canvasX+that.actor.handProperty.x, that.actor.property.canvasY+that.actor.handProperty.y);
-    that.ctx.rotate(that.angle);
-    that.ctx.rect(that.initialX, that.initialY, 80, 2);
-    that.ctx.fillStyle = 'orange';
-    that.ctx.fill();
+    that.ctx.moveTo(that.initialX+that.vx*100, that.initialY+that.vy*100);
+    that.ctx.lineTo(that.initialX+that.vx*150, that.initialY+that.vy*150);
+    that.ctx.strokeStyle = 'orange';
+    that.ctx.stroke();
     that.ctx.closePath();
     that.ctx.restore();
     that.update();
   }
 
   this.update = function(){
-      that.initialX += 1*BULLET_SPEED;
+    that.initialX += that.vx*BULLET_SPEED;
+    that.initialY += that.vy*BULLET_SPEED;
   }
   
+  this.detectCollision = function(){
+  }
+
   this.init();
 }

@@ -181,7 +181,7 @@ function Actor(ctx, assets, detectCollision){
 
   this.mouseMoved = function(event){
     var dx = event.clientX - (that.property.canvasX+that.handProperty.x);
-    var dy = event.clientY - (that.property.canvasY+that.handProperty.y-10);
+    var dy = event.clientY - (that.property.canvasY+that.handProperty.y-20);
     that.angle = Math.atan2(dy, dx);
     var degree = that.angle*180/Math.PI;
     if(degree<0 && degree<-90 || degree>0 && degree>90){

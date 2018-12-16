@@ -1,9 +1,10 @@
-function Actor(ctx, assets, detectCollision){
+function Actor(ctx, assets, detectCollision, mapArray, camera, canvas){
   var BLOCK_SIZE = 30;
   var that = this;
   this.ctx = ctx;
   this.assets = assets;
   this.detectCollision = detectCollision;
+  this.camera = camera;
   this.key = {};
   this.property = {};
   this.handProperty = {};
@@ -14,7 +15,6 @@ function Actor(ctx, assets, detectCollision){
   this.spriteIndexY = 0;
   this.counter = 0;
   this.jetFuelCounter = 0;
-  
   this.init = function(){
     that.property = {
       spriteX: [0, 95, 190, 285],
@@ -25,8 +25,8 @@ function Actor(ctx, assets, detectCollision){
       characterWidth: 75,
       characterHeight: 120,
       characterHeightJetPack: 155,
-      canvasX: 30,
-      canvasY: 16*BLOCK_SIZE+5-120,
+      canvasX: BLOCK_SIZE,
+      canvasY: 1*BLOCK_SIZE,
       jetFuel: 10
     }
     that.handProperty = {
@@ -44,6 +44,7 @@ function Actor(ctx, assets, detectCollision){
   }
 
   this.draw = function(){
+    // console.log(that.bulletArray.length);
     if(that.rightFace) {
       that.ctx.drawImage(that.assets.getImage('character-sprite-right'), that.property.spriteX[that.spriteIndexX], that.property.spriteY[that.spriteIndexY], that.property.spriteWidth, that.property.spriteHeight, that.property.canvasX, that.property.canvasY, that.property.characterWidth, that.property.characterHeight);
     }
@@ -54,6 +55,9 @@ function Actor(ctx, assets, detectCollision){
     if(that.bulletArray.length >=0 ){
       for(var i=0;i<that.bulletArray.length;i++){
         that.bulletArray[i].init();
+        if(that.bulletArray[i].detectCollision(mapArray) === true){
+          that.bulletArray.splice(i, 1);
+        }
       }
     }
   }
@@ -100,6 +104,7 @@ function Actor(ctx, assets, detectCollision){
       if(!detectCollision.detectObstacles(that.property, 68)){
         if(!detectCollision.detectBoundary(that.property, 68)){
           that.property.canvasX += 5;
+          that.camera.init(that);
           if(that.counter == 5){
             if(that.spriteIndexX<3){
               that.spriteIndexX += 1;
@@ -114,6 +119,7 @@ function Actor(ctx, assets, detectCollision){
       if(!detectCollision.detectObstacles(that.property, 65)) {
         if(!detectCollision.detectBoundary(that.property, 65)){
           that.property.canvasX -= 5;
+          that.camera.init(that);
           if(that.counter == 5){
             if(that.spriteIndexX<3){
               that.spriteIndexX += 1;
@@ -162,6 +168,7 @@ function Actor(ctx, assets, detectCollision){
       that.ctx.rect(0, 0, that.handProperty.width, that.handProperty.height);
       that.ctx.fillStyle = hand;
       that.ctx.fill();
+      that.ctx.translate(-that.property.canvasX+that.handProperty.x+30, -that.property.canvasY+that.handProperty.y+15);
       that.ctx.closePath();
       that.ctx.restore();
     }
@@ -174,14 +181,16 @@ function Actor(ctx, assets, detectCollision){
       that.ctx.rect(0, 0, that.handProperty.width, that.handProperty.height);
       that.ctx.fillStyle = hand;
       that.ctx.fill();
+      that.ctx.translate(-that.property.canvasX+that.handProperty.x+30, -that.property.canvasY+that.handProperty.y+15);
       that.ctx.closePath();
       that.ctx.restore();
     }
   }
 
   this.mouseMoved = function(event){
-    var dx = event.clientX - (that.property.canvasX+that.handProperty.x);
-    var dy = event.clientY - (that.property.canvasY+that.handProperty.y-20);
+    var offset = canvas.getBoundingClientRect();
+    var dx = event.clientX - (that.property.canvasX+that.handProperty.x)-offset.left;
+    var dy = event.clientY - (that.property.canvasY+that.handProperty.y)+20;
     that.angle = Math.atan2(dy, dx);
     var degree = that.angle*180/Math.PI;
     if(degree<0 && degree<-90 || degree>0 && degree>90){
@@ -196,8 +205,6 @@ function Actor(ctx, assets, detectCollision){
       var bulletObj ={
         ctx: that.ctx,
         actor: that,
-        positionToX: event.clientX,
-        positionToY: event.clientY,
         angle: that.angle,
         face: that.rightFace
       }
@@ -205,11 +212,6 @@ function Actor(ctx, assets, detectCollision){
     }
   }
 
-  this.mouseUnclicked = function(event){
-    if(event.button === 0){
-      // that.initiateFire = false;
-    }
-  }
 
   this.init();
 

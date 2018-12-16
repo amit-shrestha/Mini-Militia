@@ -1,11 +1,10 @@
 function Bullet(bulletParameters){
   var BULLET_SPEED = 30;
+  var BLOCK_SIZE = 30;
   var that = this;
   this.bulletParameters = bulletParameters;
   this.ctx = this.bulletParameters.ctx;
   this.actor = this.bulletParameters.actor;
-  this.positionToX = this.bulletParameters.positionToX;
-  this.positionToY = this.bulletParameters.positionToY;
   this.angle = this.bulletParameters.angle;
   this.face = this.bulletParameters.face;
   this.initialX = that.actor.property.canvasX+that.actor.handProperty.x;
@@ -31,7 +30,23 @@ function Bullet(bulletParameters){
     that.initialY += that.vy*BULLET_SPEED;
   }
   
-  this.detectCollision = function(){
+  this.detectCollision = function(mapArray){
+    if(that.initialX+that.vx*150 >= that.ctx.canvas.width || that.initialX+that.vx*150 <= 0 || that.initialY+that.vy*150 >= that.ctx.canvas.height || that.initialY+that.vy*150 <= 0){
+      return true;
+    }
+    var yPos = Math.floor(Math.abs(that.initialY+that.vx*150)/BLOCK_SIZE);
+    var xPos = Math.floor(Math.abs(that.initialX+that.vy*150)/BLOCK_SIZE);
+    // console.log('Y: '+yPos);
+    // console.log('X: '+xPos);
+    if(mapArray[yPos] != undefined){
+      if(mapArray[yPos][xPos] != undefined){
+        if(mapArray[yPos][xPos]===1 || mapArray[yPos][xPos]===2){
+          //return true;
+          // console.log('collision detected');
+        }
+      }
+    }
+    return false;
   }
 
   this.init();

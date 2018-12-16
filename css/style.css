@@ -1,5 +1,12 @@
+.container{
+  width: 1400px;
+  height: 600px;
+  overflow: hidden;
+  position: relative;
+}
 #canvas{
   background: url("../images/background.jpg");
   background-size: contain;
   cursor: url("../images/gun-target.png"), pointer;
+  position: absolute;
 }

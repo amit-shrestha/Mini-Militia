@@ -4,17 +4,16 @@ function Game(assets){
   this.ctx;
   this.map;
   this.actor;
+  this.camera;
   this.assets = assets;
   this.detectCollision;
-  this.weapon;
   this.gameAnimation;
   this.init = function(){
     this.canvas = document.getElementById('canvas');
     this.ctx = this.canvas.getContext('2d');
     this.map = new Map(this.ctx, assets);
     this.detectCollision = new DetectCollision(that.ctx, that.map.mapArray);
-    this.actor = new Actor(this.ctx, assets, this.detectCollision);
-
+    this.actor = new Actor(this.ctx, assets, this.detectCollision, this.map.mapArray, new Camera(this.ctx), that.canvas);
     that.initializePressListener();
     that.initializeReleaseListener();
     that.initializeMouseEventListener();

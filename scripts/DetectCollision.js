@@ -14,7 +14,10 @@ function DetectCollision(ctx, mapArray){
     else if(keyCode === 87) yPos = Math.floor(property.canvasY/BLOCK_SIZE);
     if(that.mapArray[yPos] != undefined){
       if(that.mapArray[yPos][xPos] != undefined){
-        if(that.mapArray[yPos][xPos]===1 || that.mapArray[yPos][xPos]===2 || that.mapArray[yPos][xPosWidth]===1 || that.mapArray[yPos][xPosWidth]===2){
+        if(that.mapArray[yPos][xPos] === 4 || that.mapArray[yPos][xPos] === 5 || that.mapArray[yPos][xPos] === 6 || that.mapArray[yPos][xPosWidth] === 4 || that.mapArray[yPos][xPosWidth] === 5 || that.mapArray[yPos][xPosWidth] === 6){
+          return true;
+        }
+        if(that.mapArray[yPos][xPos] === 1 || that.mapArray[yPos][xPos] === 2 || that.mapArray[yPos][xPos] === 3 || that.mapArray[yPos][xPosWidth] === 1 || that.mapArray[yPos][xPosWidth] === 2 || that.mapArray[yPos][xPosWidth] === 3){
           return true;
         }
       }
@@ -35,7 +38,13 @@ function DetectCollision(ctx, mapArray){
     }
     if(that.mapArray[yPos] != undefined){
       if(that.mapArray[yPos][xPos] != undefined){
-        if(that.mapArray[yPos][xPos]===1 || that.mapArray[yPos][xPos]===2 || that.mapArray[yPosFoot-1][xPos]===1 || that.mapArray[yPosFoot-1][xPos]===2 || that.mapArray[yPosBody][xPos]===1 || that.mapArray[yPosBody][xPos]===2){
+        if(that.mapArray[yPos][xPos] === 7 || that.mapArray[yPos][xPos] === 8 || that.mapArray[yPos][xPos] === 9 || that.mapArray[yPos][xPos] === 10 || that.mapArray[yPos][xPos] === 11 || that.mapArray[yPos][xPos] === 12 || that.mapArray[yPos][xPos] === 13 || that.mapArray[yPos][xPos] === 14){
+          return true;
+        }
+        if(that.mapArray[yPosFoot-1][xPos] === 7 || that.mapArray[yPosFoot-1][xPos] === 8 || that.mapArray[yPosFoot-1][xPos] === 9 || that.mapArray[yPosFoot-1][xPos] === 10 || that.mapArray[yPosFoot-1][xPos] === 11 || that.mapArray[yPosFoot-1][xPos] === 12 || that.mapArray[yPosFoot-1][xPos] === 13 || that.mapArray[yPosFoot-1][xPos] === 14){
+          return true;
+        }
+        if(that.mapArray[yPosBody][xPos] === 7 || that.mapArray[yPosBody][xPos] === 8 || that.mapArray[yPosBody][xPos] === 9 || that.mapArray[yPosBody][xPos] === 10 || that.mapArray[yPosBody][xPos] === 11 || that.mapArray[yPosBody][xPos] === 12 || that.mapArray[yPosBody][xPos] === 13 || that.mapArray[yPosBody][xPos] === 14){
           return true;
         }
       }

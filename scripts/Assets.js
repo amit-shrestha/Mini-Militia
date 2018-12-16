@@ -13,6 +13,12 @@ function Assets(){
     this.loadImage('character-sprite-left', './images/character-sprite-left.png');
     this.loadImage('right-hand-with-gun', './images/right-hand-with-gun.png');
     this.loadImage('left-hand-with-gun', './images/left-hand-with-gun.png');
+    this.loadImage('vertical-sand-right', './images/vertical-sand-right.png');
+    this.loadImage('vertical-sand-left', './images/vertical-sand-left.png');
+    this.loadImage('side-sand-right', './images/side-sand-right.png');
+    this.loadImage('side-sand-left', './images/side-sand-left.png');
+    this.loadImage('side-sand-right-top', './images/side-sand-right-top.png');
+    this.loadImage('side-sand-left-top', './images/side-sand-left-top.png');
     this.loadInterval = setInterval(function(){
       if(that.imagesLoaded == checkLoadedAssets(that.images)){
         clearInterval(that.loadInterval);

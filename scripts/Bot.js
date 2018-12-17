@@ -15,6 +15,8 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
   this.dy;
   this.character = 'bot';
   this.fireCounter = 0;
+  this.keyCode;
+
   this.init = function(){
     that.botProperty = {
       spriteX: [0, 116],
@@ -80,13 +82,17 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
     that.angle = Math.atan2(that.dy, that.dx);
     var vx = Math.cos(that.angle);
     var vy = Math.sin(that.angle);
-    if(!that.detectCollision.detectGround(that.botProperty, 0, that.character)){
-      if(!that.detectCollision.detectBoundary(that.botProperty, 0, that.character)){
+    if(vx>=0) that.keyCode = 68;
+    if(vx<0) that.keyCode = 65;
+    if(vy>=0) that.keyCode = 83;
+    if(vy<0) that.keyCode = 87;
+    if(!that.detectCollision.detectGround(that.botProperty, that.keyCode)){
+      if(!that.detectCollision.detectBoundary(that.botProperty, that.keyCode)){
         that.botProperty.canvasY += vy*BOT_SPEED;
       }
     }
-    if(!that.detectCollision.detectObstacles(that.botProperty, 0, that.character)){
-      if(!that.detectCollision.detectBoundary(that.botProperty, 0, that.character)){
+    if(!that.detectCollision.detectObstacles(that.botProperty, that.keyCode)){
+      if(!that.detectCollision.detectBoundary(that.botProperty, that.keyCode)){
         that.botProperty.canvasX += vx*BOT_SPEED;
       }
     }

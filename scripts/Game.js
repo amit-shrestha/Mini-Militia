@@ -45,9 +45,11 @@ function Game(assets){
 
   this.moveActor = function(){
     that.actor.move();
-    for(var i=0;i<that.botArray.length;i++){
-      that.botArray[i].move();
-    }
+    if(that.botArray.length != undefined){
+      for(var i=0;i<that.botArray.length;i++){
+        that.botArray[i].move();
+      }
+    }  
   }
 
   this.drawMap = function(){
@@ -59,6 +61,7 @@ function Game(assets){
     if(that.bulletArray.length >=0 ){
       for(var i=0;i<that.bulletArray.length;i++){
         that.bulletArray[i].init();
+        that.bulletArray[i].update();
         if(that.bulletArray[i].detectCollision(that.map.mapArray) === true){
           that.bulletArray.splice(i, 1);
         }

@@ -4,14 +4,14 @@ function DetectCollision(ctx, mapArray){
   this.ctx = ctx;
   this.mapArray = mapArray;
 
-  this.detectGround = function(property, keyCode){
+  this.detectGround = function(property, keyCode, character){
     var yPos;
     var xPos = Math.floor((property.canvasX)/BLOCK_SIZE);
     var xPosWidth = Math.floor((property.canvasX+property.characterWidth)/BLOCK_SIZE);
-    if(keyCode === 83){
+    if(keyCode === 83 || character === 'bot'){
       yPos = Math.floor((property.canvasY+property.characterHeight-5)/BLOCK_SIZE);
     }
-    else if(keyCode === 87) yPos = Math.floor(property.canvasY/BLOCK_SIZE);
+    else if(keyCode === 87 || character === 'bot') yPos = Math.floor(property.canvasY/BLOCK_SIZE);
     if(that.mapArray[yPos] != undefined){
       if(that.mapArray[yPos][xPos] != undefined){
         if(that.mapArray[yPos][xPos] === 4 || that.mapArray[yPos][xPos] === 5 || that.mapArray[yPos][xPos] === 6 || that.mapArray[yPos][xPosWidth] === 4 || that.mapArray[yPos][xPosWidth] === 5 || that.mapArray[yPos][xPosWidth] === 6){
@@ -25,15 +25,15 @@ function DetectCollision(ctx, mapArray){
     return false;
   }
 
-  this.detectObstacles = function(property, keyCode){
+  this.detectObstacles = function(property, keyCode, character){
     var xPos;
     var yPos = Math.floor(property.canvasY/BLOCK_SIZE);
     var yPosFoot = Math.floor((property.canvasY+property.characterHeight)/BLOCK_SIZE);
     var yPosBody = Math.floor((property.canvasY+property.characterHeight/2)/BLOCK_SIZE);
-    if(keyCode === 68){
+    if(keyCode === 68 || character === 'bot'){
       xPos = Math.floor((property.canvasX+property.characterWidth)/BLOCK_SIZE);
     }
-    else if(keyCode === 65){
+    else if(keyCode === 65 || character === 'bot'){
       xPos = Math.floor((property.canvasX)/BLOCK_SIZE);
     }
     if(that.mapArray[yPos] != undefined){
@@ -52,19 +52,19 @@ function DetectCollision(ctx, mapArray){
     return false;
   }
 
-  this.detectBoundary = function(property, keyCode){
+  this.detectBoundary = function(property, keyCode, character){
     var xPos = property.canvasX;
     var yPos = property.canvasY;
-    if(keyCode === 87){
+    if(keyCode === 87 || character === 'bot'){
       if(yPos <= 0) return true;
     }
-    else if(keyCode === 83){
+    else if(keyCode === 83 || character === 'bot'){
       if(yPos + property.characterHeight>= that.ctx.canvas.height) return true;
     }
-    if(keyCode === 65){
+    if(keyCode === 65 || character === 'bot'){
       if(xPos <= 0) return true;
     }
-    else if(keyCode === 68){
+    else if(keyCode === 68 || character === 'bot'){
       if(xPos + property.characterWidth >= that.ctx.canvas.width) return true;
     }
     return false;

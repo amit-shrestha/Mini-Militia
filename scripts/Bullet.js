@@ -20,39 +20,53 @@ function Bullet(bulletParameters){
   }
   this.vx = Math.cos(that.angle);
   this.vy = Math.sin(that.angle);
-
+  this.x = that.initialX+that.vx*100;
+  this.y = that.initialY+that.vy*100;
+  this.fX = that.x+that.vx*50;
+  this.fY = that.y+that.vy*50;
+  
   this.init = function(){
     that.ctx.lineWidth = 2;
     that.ctx.save();
     that.ctx.beginPath();
-    that.ctx.moveTo(that.initialX+that.vx*100, that.initialY+that.vy*100);
-    that.ctx.lineTo(that.initialX+that.vx*150, that.initialY+that.vy*150);
+    that.ctx.moveTo(that.x, that.y);
+    that.ctx.lineTo(that.fX, that.fY);
     that.ctx.strokeStyle = that.color;
     that.ctx.stroke();
     that.ctx.closePath();
     that.ctx.restore();
-    that.update();
   }
 
   this.update = function(){
-      that.initialX += that.vx*BULLET_SPEED;
-      that.initialY += that.vy*BULLET_SPEED;
+    that.x += that.vx*BULLET_SPEED;
+    that.y += that.vy*BULLET_SPEED;
+    this.fX = that.x+that.vx*50;
+    this.fY = that.y+that.vy*50;
   }
   
   this.detectCollision = function(mapArray){
-    if(that.initialX+that.vx*150 >= that.ctx.canvas.width || that.initialX+that.vx*150 <= 0 || that.initialY+that.vy*150 >= that.ctx.canvas.height || that.initialY+that.vy*150 <= 0){
-      // return true;
+    if(that.fX >= that.ctx.canvas.width || that.fX <= 0 || that.fY >= that.ctx.canvas.height || that.fX <= 0){
+      return true;
     }
-    var yPos = Math.floor(Math.abs(that.initialY)/BLOCK_SIZE);
-    var xPos = Math.floor(Math.abs(that.initialX)/BLOCK_SIZE);
-    // console.log('Y: '+yPos);
-    // console.log('X: '+xPos);
+    var yPos = Math.floor(Math.abs(that.fY)/BLOCK_SIZE);
+    var xPos = Math.floor(Math.abs(that.fX)/BLOCK_SIZE);
+  
     if(mapArray[yPos] != undefined){
       if(mapArray[yPos][xPos] != undefined){
         //sand
         if(mapArray[yPos][xPos] === 1 || mapArray[yPos][xPos] === 2 || mapArray[yPos][xPos] === 3){
-          
-          // console.log('sand detected');
+          return true;
+        }
+        //grass
+        if(mapArray[yPos][xPos] === 4 || mapArray[yPos][xPos] === 5 || mapArray[yPos][xPos] === 6){ 
+          return true;
+        }
+        //vertical-sand
+        if(mapArray[yPos][xPos] === 7 || mapArray[yPos][xPos] === 8 || mapArray[yPos][xPos] === 13 || mapArray[yPos][xPos] === 14){ 
+          return true;
+        }
+        //side-sand
+        if(mapArray[yPos][xPos] === 9 || mapArray[yPos][xPos] === 10 || mapArray[yPos][xPos] === 11 || mapArray[yPos][xPos] === 12){ 
           return true;
         }
       }
@@ -60,6 +74,4 @@ function Bullet(bulletParameters){
     return false;
   }
   
-  this.init();
-
 }

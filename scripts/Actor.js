@@ -68,9 +68,9 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     }
     if(that.key['W'] === true){
       if(that.property.jetFuel>0){
-        // that.property.jetFuel -= 0.1;
-        if(!detectCollision.detectGround(that.property, 87)){
-          if(!detectCollision.detectBoundary(that.property, 87)){
+        that.property.jetFuel -= 0.1;
+        if(!that.detectCollision.detectGround(that.property, 87)){
+          if(!that.detectCollision.detectBoundary(that.property, 87)){
             that.property.canvasY -= 5;
             that.spriteIndexY = 1;
             that.property.spriteHeight = that.property.spriteHeightJetPack;
@@ -86,15 +86,15 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
         that.key['W']=false;
       }
     }else if(that.key['S'] === true){
-      if(!detectCollision.detectGround(that.property, 83)){
-        if(!detectCollision.detectBoundary(that.property, 83)){
+      if(!that.detectCollision.detectGround(that.property, 83)){
+        if(!that.detectCollision.detectBoundary(that.property, 83)){
           that.property.canvasY += 10;
         }
       } 
     }
     if(that.key['D'] === true){
-      if(!detectCollision.detectObstacles(that.property, 68)){
-        if(!detectCollision.detectBoundary(that.property, 68)){
+      if(!that.detectCollision.detectObstacles(that.property, 68)){
+        if(!that.detectCollision.detectBoundary(that.property, 68)){
           that.property.canvasX += 5;
           that.camera.init(that);
           if(that.counter == 5){
@@ -108,8 +108,8 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
         }
       }
     }else if(that.key['A'] === true){
-      if(!detectCollision.detectObstacles(that.property, 65)) {
-        if(!detectCollision.detectBoundary(that.property, 65)){
+      if(!that.detectCollision.detectObstacles(that.property, 65)) {
+        if(!that.detectCollision.detectBoundary(that.property, 65)){
           that.property.canvasX -= 5;
           that.camera.init(that);
           if(that.counter == 5){

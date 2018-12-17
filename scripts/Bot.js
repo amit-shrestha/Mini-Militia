@@ -80,9 +80,17 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
     that.angle = Math.atan2(that.dy, that.dx);
     var vx = Math.cos(that.angle);
     var vy = Math.sin(that.angle);
-    that.botProperty.canvasX += vx*BOT_SPEED;
-    that.botProperty.canvasY += vy*BOT_SPEED;
-    if(that.dx<=100){
+    if(!that.detectCollision.detectGround(that.botProperty, 0, that.character)){
+      if(!that.detectCollision.detectBoundary(that.botProperty, 0, that.character)){
+        that.botProperty.canvasY += vy*BOT_SPEED;
+      }
+    }
+    if(!that.detectCollision.detectObstacles(that.botProperty, 0, that.character)){
+      if(!that.detectCollision.detectBoundary(that.botProperty, 0, that.character)){
+        that.botProperty.canvasX += vx*BOT_SPEED;
+      }
+    }
+    if(Math.abs(that.dx)<=300){
       if(that.fireCounter%20 === 0){
         var bulletObj ={
           ctx: that.ctx,

@@ -19,6 +19,9 @@ function Assets(){
     this.loadImage('side-sand-left', './images/side-sand-left.png');
     this.loadImage('side-sand-right-top', './images/side-sand-right-top.png');
     this.loadImage('side-sand-left-top', './images/side-sand-left-top.png');
+    this.loadImage('bot', './images/bot.png');
+    this.loadImage('enemy-gun-left', './images/enemy-gun-left.png');
+    this.loadImage('enemy-gun-right', './images/enemy-gun-right.png');
     this.loadInterval = setInterval(function(){
       if(that.imagesLoaded == checkLoadedAssets(that.images)){
         clearInterval(that.loadInterval);

@@ -1,4 +1,4 @@
-function Actor(ctx, assets, detectCollision, mapArray, camera, canvas){
+function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
   var BLOCK_SIZE = 30;
   var that = this;
   this.ctx = ctx;
@@ -8,13 +8,14 @@ function Actor(ctx, assets, detectCollision, mapArray, camera, canvas){
   this.key = {};
   this.property = {};
   this.handProperty = {};
-  this.bulletArray = [];
+  this.bulletArray = bulletArray;
   this.mainInterval;
   this.rightFace = true;
   this.spriteIndexX = 0;
   this.spriteIndexY = 0;
   this.counter = 0;
   this.jetFuelCounter = 0;
+  this.character = 'actor';
   this.init = function(){
     that.property = {
       spriteX: [0, 95, 190, 285],
@@ -26,7 +27,7 @@ function Actor(ctx, assets, detectCollision, mapArray, camera, canvas){
       characterHeight: 120,
       characterHeightJetPack: 155,
       canvasX: BLOCK_SIZE,
-      canvasY: 1*BLOCK_SIZE,
+      canvasY: BLOCK_SIZE,
       jetFuel: 10
     }
     that.handProperty = {
@@ -44,7 +45,6 @@ function Actor(ctx, assets, detectCollision, mapArray, camera, canvas){
   }
 
   this.draw = function(){
-    // console.log(that.bulletArray.length);
     if(that.rightFace) {
       that.ctx.drawImage(that.assets.getImage('character-sprite-right'), that.property.spriteX[that.spriteIndexX], that.property.spriteY[that.spriteIndexY], that.property.spriteWidth, that.property.spriteHeight, that.property.canvasX, that.property.canvasY, that.property.characterWidth, that.property.characterHeight);
     }
@@ -52,14 +52,6 @@ function Actor(ctx, assets, detectCollision, mapArray, camera, canvas){
       that.ctx.drawImage(that.assets.getImage('character-sprite-left'), that.property.spriteX[that.spriteIndexX], that.property.spriteY[that.spriteIndexY], that.property.spriteWidth, that.property.spriteHeight, that.property.canvasX, that.property.canvasY, that.property.characterWidth, that.property.characterHeight);
     }
     that.drawHand();
-    if(that.bulletArray.length >=0 ){
-      for(var i=0;i<that.bulletArray.length;i++){
-        that.bulletArray[i].init();
-        if(that.bulletArray[i].detectCollision(mapArray) === true){
-          that.bulletArray.splice(i, 1);
-        }
-      }
-    }
   }
 
   this.move = function(){
@@ -76,7 +68,7 @@ function Actor(ctx, assets, detectCollision, mapArray, camera, canvas){
     }
     if(that.key['W'] === true){
       if(that.property.jetFuel>0){
-        that.property.jetFuel -= 0.1;
+        // that.property.jetFuel -= 0.1;
         if(!detectCollision.detectGround(that.property, 87)){
           if(!detectCollision.detectBoundary(that.property, 87)){
             that.property.canvasY -= 5;
@@ -168,7 +160,6 @@ function Actor(ctx, assets, detectCollision, mapArray, camera, canvas){
       that.ctx.rect(0, 0, that.handProperty.width, that.handProperty.height);
       that.ctx.fillStyle = hand;
       that.ctx.fill();
-      that.ctx.translate(-that.property.canvasX+that.handProperty.x+30, -that.property.canvasY+that.handProperty.y+15);
       that.ctx.closePath();
       that.ctx.restore();
     }
@@ -181,7 +172,6 @@ function Actor(ctx, assets, detectCollision, mapArray, camera, canvas){
       that.ctx.rect(0, 0, that.handProperty.width, that.handProperty.height);
       that.ctx.fillStyle = hand;
       that.ctx.fill();
-      that.ctx.translate(-that.property.canvasX+that.handProperty.x+30, -that.property.canvasY+that.handProperty.y+15);
       that.ctx.closePath();
       that.ctx.restore();
     }

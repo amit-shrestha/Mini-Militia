@@ -25,8 +25,9 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
       spriteHeight: 106,
       characterWidth: 65,
       characterHeight: 75,
-      canvasX: getRandomNumber(10, 50)*BLOCK_SIZE,
-      canvasY: BLOCK_SIZE
+      canvasX: getRandomNumber(10, 94)*BLOCK_SIZE,
+      canvasY: BLOCK_SIZE,
+      health: 3
     }
     that.weaponProperty = {
       x: 20,
@@ -82,7 +83,7 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
     that.angle = Math.atan2(that.dy, that.dx);
     var vx = Math.cos(that.angle);
     var vy = Math.sin(that.angle);
-    if(that.dx>=100 || that.dx<=-100){
+    if(that.dx>=200 || that.dx<=-200){
       if(vy>=0) that.keyCode = 83;
       if(vy<0) that.keyCode = 87;
       if(!that.detectCollision.detectGround(that.botProperty, that.keyCode)){

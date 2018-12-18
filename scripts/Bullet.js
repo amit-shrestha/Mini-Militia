@@ -40,8 +40,8 @@ function Bullet(bulletParameters){
   this.update = function(){
     that.x += that.vx*BULLET_SPEED;
     that.y += that.vy*BULLET_SPEED;
-    this.fX = that.x+that.vx*50;
-    this.fY = that.y+that.vy*50;
+    that.fX = that.x+that.vx*50;
+    that.fY = that.y+that.vy*50;
   }
   
   this.detectCollision = function(mapArray){

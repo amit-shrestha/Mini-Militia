@@ -28,7 +28,8 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
       characterHeightJetPack: 155,
       canvasX: BLOCK_SIZE,
       canvasY: BLOCK_SIZE,
-      jetFuel: 10
+      jetFuel: 10,
+      health: 10
     }
     that.handProperty = {
       x: 20,

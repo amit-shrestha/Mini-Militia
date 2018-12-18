@@ -10,6 +10,7 @@ function Game(assets){
   this.gameAnimation;
   this.bulletArray = [];
   this.botArray = [];
+  this.botCounter = 0;
   this.init = function(){
     this.canvas = document.getElementById('canvas');
     this.ctx = this.canvas.getContext('2d');
@@ -27,12 +28,14 @@ function Game(assets){
   this.run = function(){
     that.ctx.clearRect(0, 0, that.ctx.canvas.width, that.ctx.canvas.height);
     that.drawMap();
-    if(that.botArray.length<5){
+    if(that.botArray.length<5 && that.botCounter%200 === 0){
       that.botArray.push(new Bot(that.ctx, assets, that.detectCollision, that.actor, that.bulletArray));
     }
+    that.botCounter++;
     that.drawActor();
     that.moveActor();
     that.drawFire();
+    that.checkHealth();
     that.gameAnimation = requestAnimationFrame(that.run);
   }
 
@@ -58,13 +61,44 @@ function Game(assets){
 
   this.drawFire = function(){
     // console.log(that.bulletArray.length);
-    if(that.bulletArray.length >=0 ){
+    if(that.bulletArray.length != 0){
       for(var i=0;i<that.bulletArray.length;i++){
         that.bulletArray[i].init();
         that.bulletArray[i].update();
+        
         if(that.bulletArray[i].detectCollision(that.map.mapArray) === true){
           that.bulletArray.splice(i, 1);
+          break;
         }
+
+        if(that.bulletArray[i].actor.character === 'actor'){
+          for(var j=0;j<that.botArray.length;j++){
+            if(that.bulletArray[i].fX >= that.botArray[j].botProperty.canvasX && that.bulletArray[i].fX <= that.botArray[j].botProperty.canvasX+that.botArray[j].botProperty.characterWidth && that.bulletArray[i].fY >= that.botArray[j].botProperty.canvasY && that.bulletArray[i].fY <= that.botArray[j].botProperty.canvasY+that.botArray[j].botProperty.characterHeight){
+              that.bulletArray.splice(i, 1);
+              that.botArray[j].botProperty.health -= 1;
+              break;
+            }
+          }
+        }else if(that.bulletArray[i].actor.character === 'bot'){
+          if(that.bulletArray[i].fX >= that.actor.property.canvasX && that.bulletArray[i].fY >= that.actor.property.canvasY && that.bulletArray[i].fY <= that.actor.property.canvasY+that.actor.property.canvasY+that.actor.property.characterHeight){
+            that.bulletArray.splice(i, 1);
+            that.actor.property.health -= 1;
+            console.log(that.actor.property.health);
+            break;
+          }
+        }
+
+      }
+    }
+  }
+
+  this.checkHealth = function(){
+    if(that.actor.property.health <= 0){
+      cancelAnimationFrame(that.gameAnimation);
+    }
+    for(var i=0;i<that.botArray.length;i++){
+      if(that.botArray[i].botProperty.health <= 0){
+        that.botArray.splice(i, 1);
       }
     }
   }

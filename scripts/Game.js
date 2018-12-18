@@ -118,7 +118,7 @@ function Game(assets){
     var respawnValue = 5;
     that.info.style.display = 'block';
     document.getElementById('kill').innerHTML = that.kill;
-    document.getElementById('score').innerHTML = that.score;
+    document.getElementById('score').innerHTML = that.kill * 10;
     var respawnInterval = setInterval(function(){
       document.getElementById('respawn').innerHTML = respawnValue;
       if(respawnValue == 0){

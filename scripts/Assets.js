@@ -40,8 +40,6 @@ function Assets(){
     this.loadImage('character-head', './images/character-head.png');
     this.loadImage('num-of-lives', './images/num-of-lives.png');
     this.loadImage('status', './images/status.png');
-    this.loadImage('tree', './images/tree.png');
-    this.loadImage('non-collision-wall', './images/non-collision-wall.png');
     this.loadAudio('gun-shot', './audio/gunShot.mp3');
 
     this.loadInterval = setInterval(function(){

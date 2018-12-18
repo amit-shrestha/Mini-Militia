@@ -1,6 +1,8 @@
 function Game(assets){
+  var BLOCK_SIZE = 30;
   var that = this;
   this.canvas;
+  this.info;
   this.ctx;
   this.map;
   this.actor;
@@ -11,17 +13,17 @@ function Game(assets){
   this.bulletArray = [];
   this.botArray = [];
   this.botCounter = 0;
+  this.kill = 0;
+  this.gameOver = false;
   this.init = function(){
     this.canvas = document.getElementById('canvas');
+    this.info = document.getElementById('info');
     this.ctx = this.canvas.getContext('2d');
     this.map = new Map(this.ctx, assets);
     this.detectCollision = new DetectCollision(that.ctx, that.map.mapArray);
-    this.actor = new Actor(this.ctx, assets, this.detectCollision, new Camera(this.ctx), that.canvas, that.bulletArray);
-    that.initializePressListener();
-    that.initializeReleaseListener();
-    that.initializeMouseEventListener();
-    that.initializeMouseClickListener();
-    that.initializeMouseUnclickListener();
+    this.camera = new Camera(this.ctx);
+    this.actor = new Actor(this.ctx, assets, this.detectCollision, this.camera, that.canvas, that.bulletArray);
+    this.addEventListeners();
     this.run();
   }
 
@@ -36,7 +38,9 @@ function Game(assets){
     that.moveActor();
     that.drawFire();
     that.checkHealth();
-    that.gameAnimation = requestAnimationFrame(that.run);
+    if(!that.gameOver){
+      that.gameAnimation = requestAnimationFrame(that.run);
+    }
   }
 
   this.drawActor = function(){
@@ -60,7 +64,6 @@ function Game(assets){
   }
 
   this.drawFire = function(){
-    // console.log(that.bulletArray.length);
     if(that.bulletArray.length != 0){
       for(var i=0;i<that.bulletArray.length;i++){
         that.bulletArray[i].init();
@@ -82,8 +85,9 @@ function Game(assets){
         }else if(that.bulletArray[i].actor.character === 'bot'){
           if(that.bulletArray[i].fX >= that.actor.property.canvasX && that.bulletArray[i].fY >= that.actor.property.canvasY && that.bulletArray[i].fY <= that.actor.property.canvasY+that.actor.property.canvasY+that.actor.property.characterHeight){
             that.bulletArray.splice(i, 1);
-            that.actor.property.health -= 1;
-            console.log(that.actor.property.health);
+            if(that.actor.property.health>0){
+              that.actor.property.health -= 1;
+            }
             break;
           }
         }
@@ -94,33 +98,71 @@ function Game(assets){
 
   this.checkHealth = function(){
     if(that.actor.property.health <= 0){
-      cancelAnimationFrame(that.gameAnimation);
+      if(that.actor.property.numOfLives > 1){
+        that.gameOver = true;
+        cancelAnimationFrame(that.gameAnimation);
+        that.respawn();
+      }else{
+        that.endGame();
+      }
     }
     for(var i=0;i<that.botArray.length;i++){
       if(that.botArray[i].botProperty.health <= 0){
         that.botArray.splice(i, 1);
+        that.kill += 1;
       }
     }
   }
 
-  this.initializePressListener = function(){
+  this.respawn = function(){
+    var respawnValue = 5;
+    that.info.style.display = 'block';
+    document.getElementById('kill').innerHTML = that.kill;
+    document.getElementById('score').innerHTML = that.score;
+    var respawnInterval = setInterval(function(){
+      document.getElementById('respawn').innerHTML = respawnValue;
+      if(respawnValue == 0){
+        that.info.style.display = 'none';
+        that.actor.property.canvasX = BLOCK_SIZE;
+        that.actor.property.canvasY = BLOCK_SIZE;
+        that.ctx.canvas.style.marginLeft = 0+'px';
+        that.camera.marginLeft = 0;
+        that.actor.property.health = 10;
+        that.actor.property.jetFuel = 10;
+        that.actor.property.numOfLives -= 1;
+        that.gameOver = false;
+        that.run();
+        clearInterval(respawnInterval);
+      }else{
+        respawnValue -= 1;
+      }
+    }, 1000);
+    
+  }
+
+  this.endGame = function(){
+    that.gameOver = true;
+    cancelAnimationFrame(that.gameAnimation);
+    that.removeEventListeners();
+    that.info.style.display = 'block';
+    document.getElementById('kill').innerHTML = that.kill;
+    document.getElementById('score').innerHTML = that.kill * 10;
+    document.getElementsByClassName('respawn-div')[0].innerHTML = [];
+  }
+
+
+  this.addEventListeners = function(){
     document.addEventListener("keydown", this.actor.keyPressed);
-  }
-
-  this.initializeReleaseListener = function(){
     document.addEventListener("keyup", this.actor.keyReleased);
-  }
-
-  this.initializeMouseEventListener = function(){
     document.addEventListener("mousemove", this.actor.mouseMoved);
-  }
-
-  this.initializeMouseClickListener = function(){
     document.addEventListener("mousedown", this.actor.mouseClicked);
   }
 
-  this.initializeMouseUnclickListener = function(){
-    document.addEventListener("mouseup", this.actor.mouseUnclicked);
+  this.removeEventListeners = function(){
+    document.removeEventListener("keydown", this.actor.keyPressed);
+    // document.removeEventListener("keyup", this.actor.keyReleased);
+    document.removeEventListener("mousemove", this.actor.mouseMoved);
+    document.removeEventListener("mousedown", this.actor.mouseClicked);
   }
 
   this.init();

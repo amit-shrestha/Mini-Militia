@@ -15,7 +15,9 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
   this.spriteIndexY = 0;
   this.counter = 0;
   this.jetFuelCounter = 0;
+  this.healthCounter = 0;
   this.character = 'actor';
+  this.speed = 5;
   this.init = function(){
     that.property = {
       spriteX: [0, 95, 190, 285],
@@ -29,7 +31,8 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
       canvasX: BLOCK_SIZE,
       canvasY: BLOCK_SIZE,
       jetFuel: 10,
-      health: 10
+      health: 10,
+      numOfLives: 3
     }
     that.handProperty = {
       x: 20,
@@ -53,26 +56,20 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
       that.ctx.drawImage(that.assets.getImage('character-sprite-left'), that.property.spriteX[that.spriteIndexX], that.property.spriteY[that.spriteIndexY], that.property.spriteWidth, that.property.spriteHeight, that.property.canvasX, that.property.canvasY, that.property.characterWidth, that.property.characterHeight);
     }
     that.drawHand();
+    that.drawStatus();
+    that.updateHealthAndJet();
   }
 
   this.move = function(){
     if(that.counter>5){
-      that.counter =0;
-    }
-    if(that.property.jetFuel<10 && that.jetFuelCounter==20){
-      that.property.jetFuel +=0.5;
-    }
-    if(that.jetFuelCounter<20){
-      that.jetFuelCounter+=1;
-    }else{
-      that.jetFuelCounter = 0;
+      that.counter = 0;
     }
     if(that.key['W'] === true){
       if(that.property.jetFuel>0){
         that.property.jetFuel -= 0.1;
         if(!that.detectCollision.detectGround(that.property, 87)){
           if(!that.detectCollision.detectBoundary(that.property, 87)){
-            that.property.canvasY -= 5;
+            that.property.canvasY -= that.speed;
             that.spriteIndexY = 1;
             that.property.spriteHeight = that.property.spriteHeightJetPack;
             that.property.characterHeight = that.property.characterHeightJetPack;
@@ -89,14 +86,14 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     }else if(that.key['S'] === true){
       if(!that.detectCollision.detectGround(that.property, 83)){
         if(!that.detectCollision.detectBoundary(that.property, 83)){
-          that.property.canvasY += 10;
+          that.property.canvasY += that.speed+5;
         }
       } 
     }
     if(that.key['D'] === true){
       if(!that.detectCollision.detectObstacles(that.property, 68)){
         if(!that.detectCollision.detectBoundary(that.property, 68)){
-          that.property.canvasX += 5;
+          that.property.canvasX += that.speed;
           that.camera.init(that);
           if(that.counter == 5){
             if(that.spriteIndexX<3){
@@ -111,7 +108,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     }else if(that.key['A'] === true){
       if(!that.detectCollision.detectObstacles(that.property, 65)) {
         if(!that.detectCollision.detectBoundary(that.property, 65)){
-          that.property.canvasX -= 5;
+          that.property.canvasX -= that.speed;
           that.camera.init(that);
           if(that.counter == 5){
             if(that.spriteIndexX<3){
@@ -125,6 +122,43 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
       }
     }
     // console.log(that.property.jetFuel);
+  }
+
+  this.drawStatus = function(){
+    var marginLeft = Math.abs(parseInt(that.ctx.canvas.style.marginLeft));
+    marginLeft = isNaN(marginLeft) ? 0 : marginLeft;
+    that.ctx.drawImage(that.assets.getImage('character-head'), 0, 0, 62, 62, marginLeft + 1150, 20, 30, 30);
+    that.ctx.drawImage(that.assets.getImage('num-of-lives'), 0, that.property.numOfLives * 35 - 35, 80, 35, marginLeft + 1190, 30, 30, 15);
+    that.ctx.drawImage(that.assets.getImage('status'), marginLeft+50, 10, 20, 50);
+    that.ctx.lineWidth = 8;
+    that.ctx.beginPath();
+    that.ctx.moveTo(marginLeft+80, 15);
+    that.ctx.lineTo(marginLeft+80+that.property.health*5, 15);
+    that.ctx.strokeStyle = 'green';
+    that.ctx.stroke();
+    that.ctx.closePath();
+    that.ctx.beginPath();
+    that.ctx.moveTo(marginLeft+80, 40);
+    that.ctx.lineTo(marginLeft+80+that.property.jetFuel*5, 40);
+    that.ctx.strokeStyle = 'blue';
+    that.ctx.stroke();
+    that.ctx.closePath();
+  }
+
+  this.updateHealthAndJet = function(){
+    if(that.property.health<10 && that.healthCounter%50 == 0 && that.property.numOfLives>1){
+      that.property.health += 1;
+    }
+    that.healthCounter++;
+
+    if(that.property.jetFuel<10 && that.jetFuelCounter==20){
+      that.property.jetFuel +=0.5;
+    }
+    if(that.jetFuelCounter<20){
+      that.jetFuelCounter+=1;
+    }else{
+      that.jetFuelCounter = 0;
+    }
   }
 
   this.keyPressed = function(event){
@@ -193,6 +227,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
 
   this.mouseClicked = function(event){
     if(event.button === 0){
+      that.assets.getAudio('gun-shot').play();
       var bulletObj ={
         ctx: that.ctx,
         actor: that,

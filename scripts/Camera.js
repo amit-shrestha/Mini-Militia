@@ -12,7 +12,7 @@ function Camera(ctx){
   }
 
   this.moveRight = function(){
-    if(that.marginLeft >=-1450){
+    if(that.marginLeft >=-4350){
       that.marginLeft -= 5;
       that.ctx.canvas.style.marginLeft = that.marginLeft+'px';
     }

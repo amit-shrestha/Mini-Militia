@@ -25,7 +25,7 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
       spriteHeight: 106,
       characterWidth: 65,
       characterHeight: 75,
-      canvasX: getRandomNumber(10, 94)*BLOCK_SIZE,
+      canvasX: getRandomNumber(10, 188)*BLOCK_SIZE,
       canvasY: BLOCK_SIZE,
       health: 3
     }

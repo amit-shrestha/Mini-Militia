@@ -5,8 +5,8 @@ function Map(ctx, assets){
   this.assets = assets;
   this.totalBlocksRow = Math.round(that.ctx.canvas.height/BLOCK_SIZE);
   this.totalBlocksColumn = Math.round(that.ctx.canvas.width/BLOCK_SIZE);
-  console.log(Math.round(that.ctx.canvas.width/BLOCK_SIZE));
   this.mapArray = [];
+  this.util = new Utils();
   this.init = function(){  
     that.mapArray = [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -41,13 +41,13 @@ function Map(ctx, assets){
     for(var i=0;i<that.totalBlocksRow;i++){
       for(var j=0;j<that.totalBlocksColumn;j++){
         if(i>=23){
-          that.mapArray[i][j] = getRandomNumber(1, 4);
+          that.mapArray[i][j] = that.util.getRandomNumber(1, 4);
         }else if(i==22){
           if(j>10 && j<180){
-            that.mapArray[i][j] = getRandomNumber(4, 7);
+            that.mapArray[i][j] = that.util.getRandomNumber(4, 7);
           }
           if(j<=10 || j>=180){
-            that.mapArray[i][j] = getRandomNumber(1, 4);
+            that.mapArray[i][j] = that.util.getRandomNumber(1, 4);
           }
         }
       }
@@ -108,8 +108,4 @@ function Map(ctx, assets){
   }
 
   this.init();
-}
-
-function getRandomNumber(min, max){
-  return Math.floor(Math.random()*(max-min)+min);
 }

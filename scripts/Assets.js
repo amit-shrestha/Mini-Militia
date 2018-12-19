@@ -4,6 +4,7 @@ function Assets(){
   this.canvas = document.getElementById('canvas');
   this.ctx = this.canvas.getContext('2d');
   
+  this.loadingAudio = new Audio('./audio/loadAudio.mp3');
   var that = this;
   this.images = {};
   this.audios = {};
@@ -17,8 +18,14 @@ function Assets(){
     that.ctx.drawImage(that.startImage, 0, 0, that.container.offsetWidth, that.container.offsetHeight);
   }
 
-  this.loadingAudio = new Audio('./audio/loadAudio.aac');
-  this.loadingAudio.play();
+  var check = this.loadingAudio.play();
+  if(check !== null ){
+    check.catch(function(){
+      that.loadingAudio.play();
+    });
+  }
+
+  
 
   this.init = function()
   {
@@ -28,6 +35,8 @@ function Assets(){
     this.loadImage('character-sprite-left', './images/character-sprite-left.png');
     this.loadImage('right-hand-with-gun', './images/right-hand-with-gun.png');
     this.loadImage('left-hand-with-gun', './images/left-hand-with-gun.png');
+    this.loadImage('right-hand-with-gun2', './images/right-hand-with-gun2.png');
+    this.loadImage('left-hand-with-gun2', './images/left-hand-with-gun2.png');
     this.loadImage('vertical-sand-right', './images/vertical-sand-right.png');
     this.loadImage('vertical-sand-left', './images/vertical-sand-left.png');
     this.loadImage('side-sand-right', './images/side-sand-right.png');
@@ -40,11 +49,14 @@ function Assets(){
     this.loadImage('character-head', './images/character-head.png');
     this.loadImage('num-of-lives', './images/num-of-lives.png');
     this.loadImage('status', './images/status.png');
+    this.loadImage('swap', './images/swap.png');
+    this.loadImage('default-gun', './images/default-gun.png');
     this.loadAudio('gun-shot', './audio/gunShot.mp3');
 
     this.loadInterval = setInterval(function(){
       if(that.imagesLoaded == checkLoadedAssets(that.images)){
         that.loadingAudio.pause();
+        delete that.loadingAudio;
         clearInterval(that.loadInterval);
         new Game(assets);
       }

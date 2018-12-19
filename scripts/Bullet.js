@@ -10,8 +10,14 @@ function Bullet(bulletParameters){
   if(this.actor.character === 'actor'){
     this.initialX = that.actor.property.canvasX+that.actor.handProperty.x;
     this.initialY = that.actor.property.canvasY+that.actor.handProperty.y;
-    this.color = 'blue';
-    BULLET_SPEED = 30;
+    if(this.actor.defaultGun){
+      this.color = 'blue';
+      BULLET_SPEED = 30;
+    }else{
+      this.color = 'green';
+      BULLET_SPEED = 40;
+    }
+    
   }else if(this.actor.character === 'bot'){
     this.initialX = that.actor.botProperty.canvasX+that.actor.weaponProperty.x;
     this.initialY = that.actor.botProperty.canvasY+that.actor.weaponProperty.y;

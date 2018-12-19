@@ -10,10 +10,13 @@ function Game(assets){
   this.assets = assets;
   this.detectCollision;
   this.gameAnimation;
+  this.util;
   this.bulletArray = [];
   this.botArray = [];
+  this.weaponArray = [];
   this.botCounter = 0;
   this.kill = 0;
+  this.weaponDropCounter = 0;
   this.gameOver = false;
   this.init = function(){
     this.canvas = document.getElementById('canvas');
@@ -23,6 +26,7 @@ function Game(assets){
     this.detectCollision = new DetectCollision(that.ctx, that.map.mapArray);
     this.camera = new Camera(this.ctx);
     this.actor = new Actor(this.ctx, assets, this.detectCollision, this.camera, that.canvas, that.bulletArray);
+    this.util = new Utils();
     this.addEventListeners();
     this.run();
   }
@@ -30,17 +34,23 @@ function Game(assets){
   this.run = function(){
     that.ctx.clearRect(0, 0, that.ctx.canvas.width, that.ctx.canvas.height);
     that.drawMap();
-    if(that.botArray.length<5 && that.botCounter%200 === 0){
-      that.botArray.push(new Bot(that.ctx, assets, that.detectCollision, that.actor, that.bulletArray));
-    }
-    that.botCounter++;
+    that.generateBot();
     that.drawActor();
     that.moveActor();
     that.drawFire();
+    that.dropGun();
+    that.findGun();
     that.checkHealth();
     if(!that.gameOver){
       that.gameAnimation = requestAnimationFrame(that.run);
     }
+  }
+
+  this.generateBot = function(){
+    if(that.botArray.length<5 && that.botCounter%200 === 0){
+      that.botArray.push(new Bot(that.ctx, assets, that.detectCollision, that.actor, that.bulletArray));
+    }
+    that.botCounter++;
   }
 
   this.drawActor = function(){
@@ -68,13 +78,14 @@ function Game(assets){
       for(var i=0;i<that.bulletArray.length;i++){
         that.bulletArray[i].init();
         that.bulletArray[i].update();
-        
         if(that.bulletArray[i].detectCollision(that.map.mapArray) === true){
           that.bulletArray.splice(i, 1);
           break;
         }
 
         if(that.bulletArray[i].actor.character === 'actor'){
+          that.assets.getAudio('gun-shot').play();
+
           for(var j=0;j<that.botArray.length;j++){
             if(that.bulletArray[i].fX >= that.botArray[j].botProperty.canvasX && that.bulletArray[i].fX <= that.botArray[j].botProperty.canvasX+that.botArray[j].botProperty.characterWidth && that.bulletArray[i].fY >= that.botArray[j].botProperty.canvasY && that.bulletArray[i].fY <= that.botArray[j].botProperty.canvasY+that.botArray[j].botProperty.characterHeight){
               that.bulletArray.splice(i, 1);
@@ -150,6 +161,41 @@ function Game(assets){
     document.getElementsByClassName('respawn-div')[0].innerHTML = [];
   }
 
+  this.dropGun = function(){
+    if(that.weaponDropCounter%1000 == 0){
+      that.weaponArray.push(new Weapon(that.ctx, that.detectCollision, that.assets));
+    }
+    that.weaponDropCounter++;
+    if(that.weaponArray.length !=0){
+      for(var i=0;i<that.weaponArray.length;i++){
+        that.weaponArray[i].draw();
+        that.weaponArray[i].drop();
+      }
+      if(that.weaponArray.length > 3){
+        that.weaponArray.shift();
+      }
+    }
+  }
+
+  this.findGun = function(){
+    if(that.weaponArray.length != 0){
+      for(var i=0;i<that.weaponArray.length;i++){
+        if(that.actor.property.canvasX+that.actor.property.characterWidth >= that.weaponArray[i].weapon.canvasX && that.actor.property.canvasX+that.actor.property.characterWidth <= that.weaponArray[i].weapon.canvasX + that.weaponArray[i].weapon.characterWidth && that.actor.property.canvasY+that.actor.property.characterHeight >= that.weaponArray[i].weapon.canvasY && that.actor.property.canvasY+that.actor.property.characterHeight <= that.weaponArray[i].weapon.canvasY+that.weaponArray[i].weapon.characterHeight){
+          that.ctx.drawImage(that.assets.getImage('swap'), 0, 0, 50, 50, that.actor.property.canvasX+20, that.actor.property.canvasY-30, 30, 30);
+          if(that.actor.enableSwap === true){
+            that.swapGun(i);
+            continue;
+          }
+        }
+      }
+    }
+  }
+
+  this.swapGun = function(i){
+    var temp = that.actor.defaultGun;
+    that.actor.defaultGun = that.weaponArray[i].weapon.defaultGun;
+    that.weaponArray[i].weapon.defaultGun = temp;
+  }
 
   this.addEventListeners = function(){
     document.addEventListener("keydown", this.actor.keyPressed);

@@ -11,6 +11,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
   this.bulletArray = bulletArray;
   this.mainInterval;
   this.rightFace = true;
+  this.defaultGun = true;
   this.spriteIndexX = 0;
   this.spriteIndexY = 0;
   this.counter = 0;
@@ -18,6 +19,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
   this.healthCounter = 0;
   this.character = 'actor';
   this.speed = 5;
+  this.enableSwap = false;
   this.init = function(){
     that.property = {
       spriteX: [0, 95, 190, 285],
@@ -164,10 +166,15 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
   this.keyPressed = function(event){
     if(event.keyCode === 87){
       that.key['W'] = true;
-    }else if(event.keyCode === 65){
+    }
+    if(event.keyCode === 65){
       that.key['A'] = true;
-    }else if(event.keyCode === 68){
+    }
+    if(event.keyCode === 68){
       that.key['D'] = true;
+    }
+    if(event.keyCode === 32){
+      that.enableSwap = true;
     }
   }
 
@@ -178,16 +185,25 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     that.property.characterHeight = 120;
     if(event.keyCode === 87){
       that.key['W'] = false;
-    }else if(event.keyCode === 65){
+    }
+    if(event.keyCode === 65){
       that.key['A'] = false;
-    }else if(event.keyCode === 68){
+    }
+    if(event.keyCode === 68){
       that.key['D'] = false;
+    }
+    if(event.keyCode === 32){
+      that.enableSwap = false;
     }
   }
 
   this.drawHand = function(){
     if(that.rightFace){
-      var hand = that.ctx.createPattern(that.assets.getImage('right-hand-with-gun'), 'no-repeat');
+      if(that.defaultGun){
+        var hand = that.ctx.createPattern(that.assets.getImage('right-hand-with-gun'), 'no-repeat');
+      }else{
+        var hand = that.ctx.createPattern(that.assets.getImage('right-hand-with-gun2'), 'no-repeat');
+      }
       that.ctx.save();
       that.ctx.beginPath();
       that.ctx.translate(that.property.canvasX+that.handProperty.x, that.property.canvasY+that.handProperty.y);
@@ -199,7 +215,11 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
       that.ctx.restore();
     }
     else{
-      var hand = that.ctx.createPattern(that.assets.getImage('left-hand-with-gun'), 'no-repeat');
+      if(that.defaultGun){
+        var hand = that.ctx.createPattern(that.assets.getImage('left-hand-with-gun'), 'no-repeat');
+      }else{
+        var hand = that.ctx.createPattern(that.assets.getImage('left-hand-with-gun2'), 'no-repeat');
+      }
       that.ctx.save();
       that.ctx.beginPath();
       that.ctx.translate(that.property.canvasX+that.handProperty.x+30, that.property.canvasY+that.handProperty.y+15);
@@ -227,7 +247,6 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
 
   this.mouseClicked = function(event){
     if(event.button === 0){
-      that.assets.getAudio('gun-shot').play();
       var bulletObj ={
         ctx: that.ctx,
         actor: that,

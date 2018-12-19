@@ -16,6 +16,7 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
   this.character = 'bot';
   this.fireCounter = 0;
   this.keyCode;
+  this.util = new Utils();
 
   this.init = function(){
     that.botProperty = {
@@ -25,7 +26,7 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
       spriteHeight: 106,
       characterWidth: 65,
       characterHeight: 75,
-      canvasX: getRandomNumber(10, 188)*BLOCK_SIZE,
+      canvasX: that.util.getRandomNumber(10, 188)*BLOCK_SIZE,
       canvasY: BLOCK_SIZE,
       health: 3
     }
@@ -115,8 +116,4 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
   }
 
   this.init();
-}
-
-function getRandomNumber(min, max){
-  return Math.floor(Math.random()*(max-min)+min);
 }

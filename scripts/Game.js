@@ -182,9 +182,9 @@ function Game(assets){
       for(var i=0;i<that.weaponArray.length;i++){
         if(that.actor.property.canvasX+that.actor.property.characterWidth >= that.weaponArray[i].weapon.canvasX && that.actor.property.canvasX+that.actor.property.characterWidth <= that.weaponArray[i].weapon.canvasX + that.weaponArray[i].weapon.characterWidth && that.actor.property.canvasY+that.actor.property.characterHeight >= that.weaponArray[i].weapon.canvasY && that.actor.property.canvasY+that.actor.property.characterHeight <= that.weaponArray[i].weapon.canvasY+that.weaponArray[i].weapon.characterHeight){
           that.ctx.drawImage(that.assets.getImage('swap'), 0, 0, 50, 50, that.actor.property.canvasX+20, that.actor.property.canvasY-30, 30, 30);
-          if(that.actor.enableSwap === true){
+          if(that.actor.enableSwap === true && that.actor.handle === false){
             that.swapGun(i);
-            continue;
+            return;
           }
         }
       }
@@ -195,6 +195,7 @@ function Game(assets){
     var temp = that.actor.defaultGun;
     that.actor.defaultGun = that.weaponArray[i].weapon.defaultGun;
     that.weaponArray[i].weapon.defaultGun = temp;
+    that.actor.handle = true;
   }
 
   this.addEventListeners = function(){

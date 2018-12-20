@@ -20,6 +20,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
   this.character = 'actor';
   this.speed = 5;
   this.enableSwap = false;
+  this.handle = false;
   this.init = function(){
     that.property = {
       spriteX: [0, 95, 190, 285],
@@ -135,13 +136,13 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     that.ctx.lineWidth = 8;
     that.ctx.beginPath();
     that.ctx.moveTo(marginLeft+80, 15);
-    that.ctx.lineTo(marginLeft+80+that.property.health*5, 15);
+    that.ctx.lineTo(marginLeft+80+that.property.health*10, 15);
     that.ctx.strokeStyle = 'green';
     that.ctx.stroke();
     that.ctx.closePath();
     that.ctx.beginPath();
     that.ctx.moveTo(marginLeft+80, 40);
-    that.ctx.lineTo(marginLeft+80+that.property.jetFuel*5, 40);
+    that.ctx.lineTo(marginLeft+80+that.property.jetFuel*10, 40);
     that.ctx.strokeStyle = 'blue';
     that.ctx.stroke();
     that.ctx.closePath();
@@ -194,6 +195,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     }
     if(event.keyCode === 32){
       that.enableSwap = false;
+      that.handle = false;
     }
   }
 

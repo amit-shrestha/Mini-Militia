@@ -66,7 +66,7 @@ function Game(assets){
       for(var i=0;i<that.botArray.length;i++){
         that.botArray[i].move();
       }
-    }  
+    }
   }
 
   this.drawMap = function(){
@@ -84,8 +84,6 @@ function Game(assets){
         }
 
         if(that.bulletArray[i].actor.character === 'actor'){
-          that.assets.getAudio('gun-shot').play();
-
           for(var j=0;j<that.botArray.length;j++){
             if(that.bulletArray[i].fX >= that.botArray[j].botProperty.canvasX && that.bulletArray[i].fX <= that.botArray[j].botProperty.canvasX+that.botArray[j].botProperty.characterWidth && that.bulletArray[i].fY >= that.botArray[j].botProperty.canvasY && that.bulletArray[i].fY <= that.botArray[j].botProperty.canvasY+that.botArray[j].botProperty.characterHeight){
               that.bulletArray.splice(i, 1);
@@ -148,7 +146,7 @@ function Game(assets){
         respawnValue -= 1;
       }
     }, 1000);
-    
+
   }
 
   this.endGame = function(){

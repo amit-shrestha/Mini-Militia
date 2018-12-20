@@ -17,7 +17,7 @@ function Bullet(bulletParameters){
       this.color = 'green';
       BULLET_SPEED = 40;
     }
-    
+
   }else if(this.actor.character === 'bot'){
     this.initialX = that.actor.botProperty.canvasX+that.actor.weaponProperty.x;
     this.initialY = that.actor.botProperty.canvasY+that.actor.weaponProperty.y;
@@ -30,7 +30,7 @@ function Bullet(bulletParameters){
   this.y = that.initialY+that.vy*100;
   this.fX = that.x+that.vx*50;
   this.fY = that.y+that.vy*50;
-  
+
   this.init = function(){
     that.ctx.lineWidth = 2;
     that.ctx.save();
@@ -49,14 +49,14 @@ function Bullet(bulletParameters){
     that.fX = that.x+that.vx*50;
     that.fY = that.y+that.vy*50;
   }
-  
+
   this.detectCollision = function(mapArray){
     if(that.fX >= that.ctx.canvas.width || that.fX <= 0 || that.fY >= that.ctx.canvas.height || that.fX <= 0){
       return true;
     }
     var yPos = Math.floor(Math.abs(that.fY)/BLOCK_SIZE);
     var xPos = Math.floor(Math.abs(that.fX)/BLOCK_SIZE);
-  
+
     if(mapArray[yPos] != undefined){
       if(mapArray[yPos][xPos] != undefined){
         //sand
@@ -64,20 +64,20 @@ function Bullet(bulletParameters){
           return true;
         }
         //grass
-        if(mapArray[yPos][xPos] === 4 || mapArray[yPos][xPos] === 5 || mapArray[yPos][xPos] === 6){ 
+        if(mapArray[yPos][xPos] === 4 || mapArray[yPos][xPos] === 5 || mapArray[yPos][xPos] === 6){
           return true;
         }
         //vertical-sand
-        if(mapArray[yPos][xPos] === 7 || mapArray[yPos][xPos] === 8 || mapArray[yPos][xPos] === 13 || mapArray[yPos][xPos] === 14){ 
+        if(mapArray[yPos][xPos] === 7 || mapArray[yPos][xPos] === 8 || mapArray[yPos][xPos] === 13 || mapArray[yPos][xPos] === 14){
           return true;
         }
         //side-sand
-        if(mapArray[yPos][xPos] === 9 || mapArray[yPos][xPos] === 10 || mapArray[yPos][xPos] === 11 || mapArray[yPos][xPos] === 12){ 
+        if(mapArray[yPos][xPos] === 9 || mapArray[yPos][xPos] === 10 || mapArray[yPos][xPos] === 11 || mapArray[yPos][xPos] === 12){
           return true;
         }
       }
     }
     return false;
   }
-  
+
 }

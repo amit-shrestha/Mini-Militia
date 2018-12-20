@@ -100,7 +100,7 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
         }
       }
     }
-    
+
     if(Math.abs(that.dx)<=300){
       if(that.fireCounter%20 === 0){
         var bulletObj ={

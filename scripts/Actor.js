@@ -41,7 +41,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
       x: 20,
       y: that.property.characterHeight/2.2,
       width: 120,
-      height: 30  
+      height: 30
     }
     that.key = {
       W: false,
@@ -91,7 +91,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
         if(!that.detectCollision.detectBoundary(that.property, 83)){
           that.property.canvasY += that.speed+5;
         }
-      } 
+      }
     }
     if(that.key['D'] === true){
       if(!that.detectCollision.detectObstacles(that.property, 68)){
@@ -121,7 +121,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
             }
           }
           that.counter +=1;
-        } 
+        }
       }
     }
     // console.log(that.property.jetFuel);
@@ -249,6 +249,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
 
   this.mouseClicked = function(event){
     if(event.button === 0){
+      that.assets.getAudio('gun-shot').play();
       var bulletObj ={
         ctx: that.ctx,
         actor: that,
@@ -258,7 +259,6 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
       that.bulletArray.push(new Bullet(bulletObj));
     }
   }
-
 
   this.init();
 

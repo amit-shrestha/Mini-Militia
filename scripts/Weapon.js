@@ -32,12 +32,12 @@ function Weapon(ctx, detectCollision, assets){
       that.ctx.drawImage(that.assets.getImage('enemy-gun-right'), that.weapon.spriteX, that.weapon.spriteY, that.weapon.spriteWidth, that.weapon.spriteHeight, that.weapon.canvasX, that.weapon.canvasY, that.weapon.characterWidth, that.weapon.characterHeight);
     }
   }
-  
+
   this.drop = function(){
     if(!that.detectCollision.detectGround(that.weapon, 83)){
       that.weapon.canvasY += 10;
     }
   }
-  
+
   this.init();
 }

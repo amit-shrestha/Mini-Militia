@@ -3,7 +3,7 @@ function Assets(){
   this.container = document.getElementsByClassName('container')[0];
   this.canvas = document.getElementById('canvas');
   this.ctx = this.canvas.getContext('2d');
-  
+
   this.loadingAudio = new Audio('./audio/loadAudio.mp3');
   var that = this;
   this.images = {};
@@ -25,7 +25,7 @@ function Assets(){
     });
   }
 
-  
+
 
   this.init = function()
   {
@@ -60,7 +60,7 @@ function Assets(){
         clearInterval(that.loadInterval);
         new Game(assets);
       }
-    },5000); 
+    },5000);
   }
 
   this.loadImage  = function(filename, source){

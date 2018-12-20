@@ -126,6 +126,7 @@ function Game(assets){
   }
 
   this.respawn = function(){
+    that.removeEventListeners();
     var respawnValue = 5;
     that.info.style.display = 'block';
     document.getElementsByClassName('retry-btn')[0].style.display = 'none';

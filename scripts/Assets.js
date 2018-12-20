@@ -3,7 +3,6 @@ function Assets(){
   this.container = document.getElementsByClassName('container')[0];
   this.container.style.height = window.innerHeight+'px';
   this.canvas = document.getElementById('canvas');
-  this.canvas.height = window.innerHeight;
   this.ctx = this.canvas.getContext('2d');
 
   this.loadingAudio = new Audio('./audio/loadAudio.mp3');

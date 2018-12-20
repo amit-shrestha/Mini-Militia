@@ -16,7 +16,6 @@ function Game(assets){
   this.botArray = [];
   this.weaponArray = [];
   this.botCounter = 0;
-  this.kill = 0;
   this.weaponDropCounter = 0;
   this.gameOver = false;
   this.init = function(){
@@ -120,7 +119,7 @@ function Game(assets){
     for(var i=0;i<that.botArray.length;i++){
       if(that.botArray[i].botProperty.health <= 0){
         that.botArray.splice(i, 1);
-        that.kill += 1;
+        that.actor.kill += 1;
       }
     }
   }
@@ -130,8 +129,8 @@ function Game(assets){
     var respawnValue = 5;
     that.info.style.display = 'block';
     document.getElementsByClassName('retry-btn')[0].style.display = 'none';
-    document.getElementById('kill').innerHTML = that.kill;
-    document.getElementById('score').innerHTML = that.kill * 10;
+    document.getElementById('kill').innerHTML = that.actor.kill;
+    document.getElementById('score').innerHTML = that.actor.skill * 10;
     var respawnInterval = setInterval(function(){
       document.getElementById('respawn').innerHTML = respawnValue;
       if(respawnValue == 0){
@@ -159,8 +158,8 @@ function Game(assets){
     cancelAnimationFrame(that.gameAnimation);
     that.removeEventListeners();
     that.info.style.display = 'block';
-    document.getElementById('kill').innerHTML = that.kill;
-    document.getElementById('score').innerHTML = that.kill * 10;
+    document.getElementById('kill').innerHTML = that.actor.kill;
+    document.getElementById('score').innerHTML = that.actor.kill * 10;
     document.getElementsByClassName('respawn-div')[0].innerHTML = [];
     document.getElementsByClassName('retry-btn')[0].style.display = 'block';
   }

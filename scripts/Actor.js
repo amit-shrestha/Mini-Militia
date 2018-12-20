@@ -19,6 +19,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
   this.healthCounter = 0;
   this.character = 'actor';
   this.speed = 5;
+  this.kill = 0;
   this.enableSwap = false;
   this.handle = false;
   this.init = function(){
@@ -145,6 +146,10 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     that.ctx.strokeStyle = 'blue';
     that.ctx.stroke();
     that.ctx.closePath();
+    that.ctx.font = '30px Arial';
+    that.ctx.fontWeight = 'bold';
+    that.ctx.fillStyle = 'white';
+    that.ctx.fillText('KILL: '+that.kill, marginLeft+250, 40);
   }
 
   this.updateHealthAndJet = function(){

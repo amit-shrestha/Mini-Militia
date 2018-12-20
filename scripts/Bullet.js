@@ -1,6 +1,8 @@
 function Bullet(bulletParameters){
   var BULLET_SPEED;
   var BLOCK_SIZE = 30;
+  var BULLET_OFFSET = 150;
+  var BULLET_SIZE = 20;
   var that = this;
   this.bulletParameters = bulletParameters;
   this.ctx = this.bulletParameters.ctx;
@@ -22,17 +24,17 @@ function Bullet(bulletParameters){
     this.initialX = that.actor.botProperty.canvasX+that.actor.weaponProperty.x;
     this.initialY = that.actor.botProperty.canvasY+that.actor.weaponProperty.y;
     this.color = 'red';
-    BULLET_SPEED = 10;
+    BULLET_SPEED = 20;
   }
   this.vx = Math.cos(that.angle);
   this.vy = Math.sin(that.angle);
-  this.x = that.initialX+that.vx*100;
-  this.y = that.initialY+that.vy*100;
-  this.fX = that.x+that.vx*50;
-  this.fY = that.y+that.vy*50;
+  this.x = that.initialX+that.vx*BULLET_OFFSET;
+  this.y = that.initialY+that.vy*BULLET_OFFSET;
+  this.fX = that.x+that.vx*BULLET_SIZE;
+  this.fY = that.y+that.vy*BULLET_SIZE;
 
   this.init = function(){
-    that.ctx.lineWidth = 2;
+    that.ctx.lineWidth = 3;
     that.ctx.save();
     that.ctx.beginPath();
     that.ctx.moveTo(that.x, that.y);
@@ -46,8 +48,8 @@ function Bullet(bulletParameters){
   this.update = function(){
     that.x += that.vx*BULLET_SPEED;
     that.y += that.vy*BULLET_SPEED;
-    that.fX = that.x+that.vx*50;
-    that.fY = that.y+that.vy*50;
+    that.fX = that.x+that.vx*BULLET_SIZE;
+    that.fY = that.y+that.vy*BULLET_SIZE;
   }
 
   this.detectCollision = function(mapArray){

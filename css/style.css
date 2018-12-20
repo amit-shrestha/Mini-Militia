@@ -1,9 +1,7 @@
 .container{
-  width: 1400px;
-  height: 800px;
+  width: 100%;
   overflow: hidden;
   position: relative;
-  margin: 0 auto;
 }
 #canvas{
   background: url("../images/background.jpg");
@@ -14,12 +12,13 @@
 #info{
   position: absolute;
   font-size: 20px;
-  opacity: 0.6;
+  opacity: 0.8;
   width: 100%;
-  height: 800px;
+  height: 100%;
   text-align: center;
   background-color: lightgray;
   display: none;
+  font-weight: bold;
 }
 .kill-div{
   margin-top: 10%;
@@ -29,4 +28,14 @@
 }
 .respawn-div{
   margin-top: 20px;
+}
+.retry-btn{
+  margin-top: 20px;
+}
+.retry-btn a{
+ text-decoration: none;
+}
+.retry-btn button{
+  width: 100px;
+  height: 50px;
 }

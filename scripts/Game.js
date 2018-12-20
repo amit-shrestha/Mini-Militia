@@ -1,6 +1,7 @@
 function Game(assets){
   var BLOCK_SIZE = 30;
   var that = this;
+  this.retry;
   this.canvas;
   this.info;
   this.ctx;
@@ -20,6 +21,7 @@ function Game(assets){
   this.gameOver = false;
   this.init = function(){
     this.canvas = document.getElementById('canvas');
+    this.retry = document.getElementsByClassName('retry-btn')[0];
     this.info = document.getElementById('info');
     this.ctx = this.canvas.getContext('2d');
     this.map = new Map(this.ctx, assets);
@@ -126,6 +128,7 @@ function Game(assets){
   this.respawn = function(){
     var respawnValue = 5;
     that.info.style.display = 'block';
+    document.getElementsByClassName('retry-btn')[0].style.display = 'none';
     document.getElementById('kill').innerHTML = that.kill;
     document.getElementById('score').innerHTML = that.kill * 10;
     var respawnInterval = setInterval(function(){
@@ -157,6 +160,7 @@ function Game(assets){
     document.getElementById('kill').innerHTML = that.kill;
     document.getElementById('score').innerHTML = that.kill * 10;
     document.getElementsByClassName('respawn-div')[0].innerHTML = [];
+    document.getElementsByClassName('retry-btn')[0].style.display = 'block';
   }
 
   this.dropGun = function(){
@@ -201,11 +205,14 @@ function Game(assets){
     document.addEventListener("keyup", this.actor.keyReleased);
     document.addEventListener("mousemove", this.actor.mouseMoved);
     document.addEventListener("mousedown", this.actor.mouseClicked);
+    that.retry.addEventListener("click", function(){
+      new Game(this.assets);
+    });
+
   }
 
   this.removeEventListeners = function(){
     document.removeEventListener("keydown", this.actor.keyPressed);
-    // document.removeEventListener("keyup", this.actor.keyReleased);
     document.removeEventListener("mousemove", this.actor.mouseMoved);
     document.removeEventListener("mousedown", this.actor.mouseClicked);
   }

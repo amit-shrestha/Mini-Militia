@@ -1,7 +1,9 @@
 var assets;
 function Assets(){
   this.container = document.getElementsByClassName('container')[0];
+  this.container.style.height = window.innerHeight+'px';
   this.canvas = document.getElementById('canvas');
+  this.canvas.height = window.innerHeight;
   this.ctx = this.canvas.getContext('2d');
 
   this.loadingAudio = new Audio('./audio/loadAudio.mp3');
@@ -18,12 +20,8 @@ function Assets(){
     that.ctx.drawImage(that.startImage, 0, 0, that.container.offsetWidth, that.container.offsetHeight);
   }
 
-  var check = this.loadingAudio.play();
-  if(check !== null ){
-    check.catch(function(){
-      that.loadingAudio.play();
-    });
-  }
+
+  setTimeout(() => that.loadingAudio.play())
 
 
 
@@ -82,8 +80,10 @@ function Assets(){
     that.audios[filename] = audio;
   }
 
-  this.getAudio = function(filename){
-    return that.audios[filename];
+  this.getAudio = function(source){
+    var audio = new Audio();
+    audio.src = source;
+    return audio;
   }
 
   this.init();

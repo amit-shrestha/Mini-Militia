@@ -144,6 +144,7 @@ function Game(assets){
         that.actor.property.jetFuel = 10;
         that.actor.property.numOfLives -= 1;
         that.gameOver = false;
+        that.addEventListeners();
         that.run();
         clearInterval(respawnInterval);
       }else{

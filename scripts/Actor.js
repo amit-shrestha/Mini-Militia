@@ -22,6 +22,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
   this.kill = 0;
   this.enableSwap = false;
   this.handle = false;
+  this.gamePause = false;
   this.init = function(){
     that.property = {
       spriteX: [0, 95, 190, 285],
@@ -180,6 +181,10 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     }
     if(event.keyCode === 16){
       that.enableSwap = true;
+    }
+    if(event.keyCode === 13){
+      that.gamePause = that.gamePause ? false:true;
+      console.log(that.gamePause);
     }
   }
 

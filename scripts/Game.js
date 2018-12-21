@@ -33,17 +33,27 @@ function Game(assets){
   }
 
   this.run = function(){
-    that.ctx.clearRect(0, 0, that.ctx.canvas.width, that.ctx.canvas.height);
-    that.drawMap();
-    that.generateBot();
-    that.drawActor();
-    that.moveActor();
-    that.drawFire();
-    that.dropGun();
-    that.findGun();
-    that.checkHealth();
-    if(!that.gameOver){
+    if(that.actor.gamePause === true){
+      that.info.style.display = 'block';
+      document.getElementsByClassName('retry-btn')[0].style.display = 'none';
+      document.getElementById('kill').innerHTML = that.actor.kill;
+      document.getElementById('score').innerHTML = that.actor.kill * 10;
+      document.getElementsByClassName('respawn-div')[0].innerHTML = [];
       that.gameAnimation = requestAnimationFrame(that.run);
+    }else{
+      that.info.style.display = 'none';
+      that.ctx.clearRect(0, 0, that.ctx.canvas.width, that.ctx.canvas.height);
+      that.drawMap();
+      that.generateBot();
+      that.drawActor();
+      that.moveActor();
+      that.drawFire();
+      that.dropGun();
+      that.findGun();
+      that.checkHealth();
+      if(!that.gameOver){
+        that.gameAnimation = requestAnimationFrame(that.run);
+      }
     }
   }
 

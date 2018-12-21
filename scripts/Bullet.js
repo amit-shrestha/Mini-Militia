@@ -1,7 +1,7 @@
 function Bullet(bulletParameters){
   var BULLET_SPEED;
   var BLOCK_SIZE = 30;
-  var BULLET_OFFSET = 150;
+  var BULLET_OFFSET = 80;
   var BULLET_SIZE = 20;
   var that = this;
   this.bulletParameters = bulletParameters;
@@ -56,25 +56,27 @@ function Bullet(bulletParameters){
     if(that.fX >= that.ctx.canvas.width || that.fX <= 0 || that.fY >= that.ctx.canvas.height || that.fX <= 0){
       return true;
     }
-    var yPos = Math.floor(Math.abs(that.fY)/BLOCK_SIZE);
-    var xPos = Math.floor(Math.abs(that.fX)/BLOCK_SIZE);
+    var yPosStart = Math.floor(Math.abs(that.fY)/BLOCK_SIZE);
+    var xPosStart = Math.floor(Math.abs(that.fX)/BLOCK_SIZE);
+    var yPosEnd = Math.floor(Math.abs(that.y)/BLOCK_SIZE);
+    var xPosEnd = Math.floor(Math.abs(that.x)/BLOCK_SIZE);
 
-    if(mapArray[yPos] != undefined){
-      if(mapArray[yPos][xPos] != undefined){
+    if(mapArray[yPosEnd] != undefined && mapArray[yPosStart] != undefined){
+      if(mapArray[yPosEnd][xPosEnd] != undefined && mapArray[yPosStart][xPosStart] != undefined){
         //sand
-        if(mapArray[yPos][xPos] === 1 || mapArray[yPos][xPos] === 2 || mapArray[yPos][xPos] === 3){
+        if(mapArray[yPosEnd][xPosEnd] === 1 || mapArray[yPosEnd][xPosEnd] === 2 || mapArray[yPosEnd][xPosEnd] === 3 || mapArray[yPosStart][xPosStart] === 1 || mapArray[yPosStart][xPosStart] === 2 || mapArray[yPosStart][xPosStart] === 3){
           return true;
         }
         //grass
-        if(mapArray[yPos][xPos] === 4 || mapArray[yPos][xPos] === 5 || mapArray[yPos][xPos] === 6){
+        if(mapArray[yPosEnd][xPosEnd] === 4 || mapArray[yPosEnd][xPosEnd] === 5 || mapArray[yPosEnd][xPosEnd] === 6 || mapArray[yPosStart][xPosStart] === 4 || mapArray[yPosStart][xPosStart] === 5 || mapArray[yPosStart][xPosStart] === 6){
           return true;
         }
         //vertical-sand
-        if(mapArray[yPos][xPos] === 7 || mapArray[yPos][xPos] === 8 || mapArray[yPos][xPos] === 13 || mapArray[yPos][xPos] === 14){
+        if(mapArray[yPosEnd][xPosEnd] === 7 || mapArray[yPosEnd][xPosEnd] === 8 || mapArray[yPosEnd][xPosEnd] === 13 || mapArray[yPosEnd][xPosEnd] === 14 || mapArray[yPosStart][xPosStart] === 7 || mapArray[yPosStart][xPosStart] === 8 || mapArray[yPosStart][xPosStart] === 13 || mapArray[yPosStart][xPosStart] === 14){
           return true;
         }
         //side-sand
-        if(mapArray[yPos][xPos] === 9 || mapArray[yPos][xPos] === 10 || mapArray[yPos][xPos] === 11 || mapArray[yPos][xPos] === 12){
+        if(mapArray[yPosEnd][xPosEnd] === 9 || mapArray[yPosEnd][xPosEnd] === 10 || mapArray[yPosEnd][xPosEnd] === 11 || mapArray[yPosEnd][xPosEnd] === 12 || mapArray[yPosStart][xPosStart] === 9 || mapArray[yPosStart][xPosStart] === 10 || mapArray[yPosStart][xPosStart] === 11 || mapArray[yPosStart][xPosStart] === 12){
           return true;
         }
       }

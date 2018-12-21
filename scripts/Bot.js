@@ -1,6 +1,7 @@
 function Bot(ctx, assets, detectCollision, actor, bulletArray){
+  this.util = new Utils();
   var BLOCK_SIZE = 30;
-  var BOT_SPEED = Math.random();
+  var BOT_SPEED = this.util.getRandomNumber(1, 4);
   var that = this;
   this.ctx = ctx;
   this.assets = assets;
@@ -16,7 +17,6 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
   this.character = 'bot';
   this.fireCounter = 0;
   this.keyCode;
-  this.util = new Utils();
 
   this.init = function(){
     that.botProperty = {
@@ -109,6 +109,7 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
           angle: that.angle,
           face: that.rightFace
         }
+        that.assets.getAudio('./audio/gunShot.mp3').play();
         that.bulletArray.push(new Bullet(bulletObj));
       }
       that.fireCounter++;

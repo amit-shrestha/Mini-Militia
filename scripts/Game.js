@@ -130,7 +130,7 @@ function Game(assets){
     that.info.style.display = 'block';
     document.getElementsByClassName('retry-btn')[0].style.display = 'none';
     document.getElementById('kill').innerHTML = that.actor.kill;
-    document.getElementById('score').innerHTML = that.actor.skill * 10;
+    document.getElementById('score').innerHTML = that.actor.kill * 10;
     var respawnInterval = setInterval(function(){
       document.getElementById('respawn').innerHTML = respawnValue;
       if(respawnValue == 0){

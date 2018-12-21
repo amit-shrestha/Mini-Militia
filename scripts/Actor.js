@@ -70,7 +70,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     }
     if(that.key['W'] === true){
       if(that.property.jetFuel>0){
-        that.property.jetFuel -= 0.1;
+        that.property.jetFuel -= 0.05;
         if(!that.detectCollision.detectGround(that.property, 87)){
           if(!that.detectCollision.detectBoundary(that.property, 87)){
             that.property.canvasY -= that.speed;

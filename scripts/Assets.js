@@ -5,7 +5,7 @@ function Assets(){
   this.canvas = document.getElementById('canvas');
   this.ctx = this.canvas.getContext('2d');
 
-  this.loadingAudio = new Audio('./audio/loadAudio.mp3');
+  this.loadingAudio = new Audio('./audio/loadAudio.aac');
   var that = this;
   this.images = {};
   this.audios = {};

@@ -29,9 +29,7 @@ function Bullet(bulletParameters){
   this.vx = Math.cos(that.angle);
   this.vy = Math.sin(that.angle);
   this.x = that.initialX+that.vx*BULLET_OFFSET;
-  console.log('X: '+that.x);
   this.y = that.initialY+that.vy*BULLET_OFFSET;
-  console.log('Y: '+that.y)
   this.fX = that.x+that.vx*BULLET_SIZE;
   this.fY = that.y+that.vy*BULLET_SIZE;
 
@@ -65,21 +63,41 @@ function Bullet(bulletParameters){
 
     if(mapArray[yPosEnd] != undefined && mapArray[yPosStart] != undefined){
       if(mapArray[yPosEnd][xPosEnd] != undefined && mapArray[yPosStart][xPosStart] != undefined){
-        //sand
-        if(mapArray[yPosEnd][xPosEnd] === 1 || mapArray[yPosEnd][xPosEnd] === 2 || mapArray[yPosEnd][xPosEnd] === 3 || mapArray[yPosStart][xPosStart] === 1 || mapArray[yPosStart][xPosStart] === 2 || mapArray[yPosStart][xPosStart] === 3){
-          return true;
+        switch(mapArray[yPosEnd][xPosEnd]){
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+          case 5:
+          case 6:
+          case 7:
+          case 8:
+          case 9:
+          case 10:
+          case 11:
+          case 12:
+          case 13:
+          case 14:
+            return true;
+            break;
         }
-        //grass
-        if(mapArray[yPosEnd][xPosEnd] === 4 || mapArray[yPosEnd][xPosEnd] === 5 || mapArray[yPosEnd][xPosEnd] === 6 || mapArray[yPosStart][xPosStart] === 4 || mapArray[yPosStart][xPosStart] === 5 || mapArray[yPosStart][xPosStart] === 6){
-          return true;
-        }
-        //vertical-sand
-        if(mapArray[yPosEnd][xPosEnd] === 7 || mapArray[yPosEnd][xPosEnd] === 8 || mapArray[yPosEnd][xPosEnd] === 13 || mapArray[yPosEnd][xPosEnd] === 14 || mapArray[yPosStart][xPosStart] === 7 || mapArray[yPosStart][xPosStart] === 8 || mapArray[yPosStart][xPosStart] === 13 || mapArray[yPosStart][xPosStart] === 14){
-          return true;
-        }
-        //side-sand
-        if(mapArray[yPosEnd][xPosEnd] === 9 || mapArray[yPosEnd][xPosEnd] === 10 || mapArray[yPosEnd][xPosEnd] === 11 || mapArray[yPosEnd][xPosEnd] === 12 || mapArray[yPosStart][xPosStart] === 9 || mapArray[yPosStart][xPosStart] === 10 || mapArray[yPosStart][xPosStart] === 11 || mapArray[yPosStart][xPosStart] === 12){
-          return true;
+        switch(mapArray[yPosStart][xPosStart]){
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+          case 5:
+          case 6:
+          case 7:
+          case 8:
+          case 9:
+          case 10:
+          case 11:
+          case 12:
+          case 13:
+          case 14:
+            return true;
+            break;
         }
       }
     }

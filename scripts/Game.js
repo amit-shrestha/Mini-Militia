@@ -55,6 +55,7 @@ function Game(assets){
       that.drawMap();
       that.generateBot();
       that.drawActor();
+      that.showEnemyDirection();
       that.moveActor();
       that.drawFire();
       that.dropGun();
@@ -75,14 +76,41 @@ function Game(assets){
 
   this.drawActor = function(){
     that.actor.draw();
-    for(var i=0;i<that.botArray.length;i++){
-      that.botArray[i].draw();
+    if(that.botArray.length > 0){
+      for(var i=0;i<that.botArray.length;i++){
+        that.botArray[i].draw();
+      }
+    }
+  }
+
+  this.showEnemyDirection = function(){
+    if(that.botArray.length > 0){
+      for(var i=0;i<that.botArray.length;i++){
+        var dx = that.actor.property.canvasX - that.botArray[i].botProperty.canvasX;
+        var dy = that.actor.property.canvasY - that.botArray[i].botProperty.canvasY;
+        if(dx <= 700){
+          var angle = Math.atan2(dy, dx);
+          that.ctx.save();
+          that.ctx.beginPath();
+          that.ctx.lineWidth = 2;
+          that.ctx.translate(that.actor.property.canvasX, that.actor.property.canvasY);
+          that.ctx.rotate(angle);
+          that.ctx.moveTo(-150, 0);
+          that.ctx.lineTo(-120, -25);
+          that.ctx.lineTo(-120, 25);
+          that.ctx.lineTo(-150, 0);
+          that.ctx.strokeStyle = 'red';
+          that.ctx.stroke();
+          that.ctx.closePath();
+          that.ctx.restore();
+        }
+      }
     }
   }
 
   this.moveActor = function(){
     that.actor.move();
-    if(that.botArray.length != undefined){
+    if(that.botArray.length > 0){
       for(var i=0;i<that.botArray.length;i++){
         that.botArray[i].move();
       }
@@ -206,7 +234,6 @@ function Game(assets){
           that.ctx.drawImage(that.assets.getImage('swap'), 0, 0, 50, 50, that.actor.property.canvasX+20, that.actor.property.canvasY-30, 30, 30);
           if(that.enableSwap === true && that.handle === false){
             that.swapGun(i);
-            return;
           }
         }
       }

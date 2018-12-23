@@ -13,11 +13,25 @@ function DetectCollision(ctx, mapArray){
     }else if(keyCode === 87) yPos = Math.floor(property.canvasY/BLOCK_SIZE);
     if(that.mapArray[yPos] != undefined){
       if(that.mapArray[yPos][xPos] != undefined){
-        if(that.mapArray[yPos][xPos] === 4 || that.mapArray[yPos][xPos] === 5 || that.mapArray[yPos][xPos] === 6 || that.mapArray[yPos][xPosWidth] === 4 || that.mapArray[yPos][xPosWidth] === 5 || that.mapArray[yPos][xPosWidth] === 6){
-          return true;
+        switch(that.mapArray[yPos][xPos]){
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+          case 5:
+          case 6:
+            return true;
+            break;
         }
-        if(that.mapArray[yPos][xPos] === 1 || that.mapArray[yPos][xPos] === 2 || that.mapArray[yPos][xPos] === 3 || that.mapArray[yPos][xPosWidth] === 1 || that.mapArray[yPos][xPosWidth] === 2 || that.mapArray[yPos][xPosWidth] === 3){
-          return true;
+        switch(that.mapArray[yPos][xPosWidth]){
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+          case 5:
+          case 6:
+            return true;
+            break;
         }
       }
     }
@@ -37,14 +51,41 @@ function DetectCollision(ctx, mapArray){
     }
     if(that.mapArray[yPos] != undefined){
       if(that.mapArray[yPos][xPos] != undefined){
-        if(that.mapArray[yPos][xPos] === 7 || that.mapArray[yPos][xPos] === 8 || that.mapArray[yPos][xPos] === 9 || that.mapArray[yPos][xPos] === 10 || that.mapArray[yPos][xPos] === 11 || that.mapArray[yPos][xPos] === 12 || that.mapArray[yPos][xPos] === 13 || that.mapArray[yPos][xPos] === 14){
-          return true;
+        switch(that.mapArray[yPos][xPos]){
+          case 7:
+          case 8:
+          case 9:
+          case 10:
+          case 11:
+          case 12:
+          case 13:
+          case 14:
+            return true;
+            break;
         }
-        if(that.mapArray[yPosFoot-1][xPos] === 7 || that.mapArray[yPosFoot-1][xPos] === 8 || that.mapArray[yPosFoot-1][xPos] === 9 || that.mapArray[yPosFoot-1][xPos] === 10 || that.mapArray[yPosFoot-1][xPos] === 11 || that.mapArray[yPosFoot-1][xPos] === 12 || that.mapArray[yPosFoot-1][xPos] === 13 || that.mapArray[yPosFoot-1][xPos] === 14){
-          return true;
+        switch(that.mapArray[yPosFoot-1][xPos]){
+          case 7:
+          case 8:
+          case 9:
+          case 10:
+          case 11:
+          case 12:
+          case 13:
+          case 14:
+            return true;
+            break;
         }
-        if(that.mapArray[yPosBody][xPos] === 7 || that.mapArray[yPosBody][xPos] === 8 || that.mapArray[yPosBody][xPos] === 9 || that.mapArray[yPosBody][xPos] === 10 || that.mapArray[yPosBody][xPos] === 11 || that.mapArray[yPosBody][xPos] === 12 || that.mapArray[yPosBody][xPos] === 13 || that.mapArray[yPosBody][xPos] === 14){
-          return true;
+        switch(that.mapArray[yPosBody][xPos]){
+          case 7:
+          case 8:
+          case 9:
+          case 10:
+          case 11:
+          case 12:
+          case 13:
+          case 14:
+            return true;
+            break;
         }
       }
     }
@@ -54,17 +95,19 @@ function DetectCollision(ctx, mapArray){
   this.detectBoundary = function(property, keyCode){
     var xPos = property.canvasX;
     var yPos = property.canvasY;
-    if(keyCode === 87){
-      if(yPos <= 0) return true;
-    }
-    if(keyCode === 83){
-      if(yPos + property.characterHeight>= that.ctx.canvas.height) return true;
-    }
-    if(keyCode === 65){
-      if(xPos <= 0) return true;
-    }
-    if(keyCode === 68){
-      if(xPos + property.characterWidth >= that.ctx.canvas.width) return true;
+    switch(keyCode){
+      case 87:
+        if(yPos <= 0) return true;
+        break;
+      case 83:
+        if(yPos + property.characterHeight>= that.ctx.canvas.height) return true;
+        break;
+      case 65:
+        if(xPos <= 0) return true;
+        break;
+      case 68:
+        if(xPos + property.characterWidth >= that.ctx.canvas.width) return true;
+        break;
     }
     return false;
   }

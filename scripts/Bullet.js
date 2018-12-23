@@ -29,7 +29,9 @@ function Bullet(bulletParameters){
   this.vx = Math.cos(that.angle);
   this.vy = Math.sin(that.angle);
   this.x = that.initialX+that.vx*BULLET_OFFSET;
+  console.log('X: '+that.x);
   this.y = that.initialY+that.vy*BULLET_OFFSET;
+  console.log('Y: '+that.y)
   this.fX = that.x+that.vx*BULLET_SIZE;
   this.fY = that.y+that.vy*BULLET_SIZE;
 

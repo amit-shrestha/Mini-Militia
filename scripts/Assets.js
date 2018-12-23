@@ -14,9 +14,8 @@ function Assets(){
 
   this.startImage = new Image();
   this.startImage.src = './images/start.png';
-
   this.startImage.onload = function(){
-    that.ctx.drawImage(that.startImage, 0, 0, that.container.offsetWidth, that.container.offsetHeight);
+    that.ctx.drawImage(that.startImage, 0, 0, that.container.offsetWidth, that.canvas.offsetHeight);
   }
 
 

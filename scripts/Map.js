@@ -39,51 +39,65 @@ function Map(ctx, assets){
   this.draw =function(){
     for(var row=0;row<that.totalBlocksRow;row++){
       for(var column=0;column<that.totalBlocksColumn;column++){
-        //sand
-        if(that.mapArray[row][column] == 1){
-          that.ctx.drawImage(that.assets.getImage('sand'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }else if(that.mapArray[row][column] == 2){
-          that.ctx.drawImage(that.assets.getImage('sand'), 100, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }else if(that.mapArray[row][column] == 3){
-          that.ctx.drawImage(that.assets.getImage('sand'), 200, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }
-        //grass
-        else if(that.mapArray[row][column] == 4){
-          that.ctx.drawImage(that.assets.getImage('grass'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }else if(that.mapArray[row][column] == 5){
-          that.ctx.drawImage(that.assets.getImage('grass'), 100, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }else if(that.mapArray[row][column] == 6){
-          that.ctx.drawImage(that.assets.getImage('grass'), 200, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }
-        //vertical-sand-right
-        else if(that.mapArray[row][column] == 7){
-          that.ctx.drawImage(that.assets.getImage('vertical-sand-right'), 0, 0, 100, 44, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }else if(that.mapArray[row][column] == 8){
-          that.ctx.drawImage(that.assets.getImage('vertical-sand-right'), 180, 0, 100, 44, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }
-        //side-sand-right-top
-        else if(that.mapArray[row][column] == 9){
-          that.ctx.drawImage(that.assets.getImage('side-sand-right-top'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }
-        //sode-sand-left-top
-        else if(that.mapArray[row][column] == 10){
-          that.ctx.drawImage(that.assets.getImage('side-sand-left-top'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }
-        //side-sand-left
-        else if(that.mapArray[row][column] == 11){
-          that.ctx.drawImage(that.assets.getImage('side-sand-left'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }
-        //side-sand-right
-        else if(that.mapArray[row][column] == 12){
-          that.ctx.drawImage(that.assets.getImage('side-sand-right'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }
-        //vertical-sand-left
-        else if(that.mapArray[row][column] == 13){
-          that.ctx.drawImage(that.assets.getImage('vertical-sand-left'), 0, 0, 95, 44, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }else if(that.mapArray[row][column] == 14){
-          that.ctx.drawImage(that.assets.getImage('vertical-sand-left'), 175, 0, 100, 44, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        }
+        switch(that.mapArray[row][column]){
+          //sand
+          case 1:
+            that.ctx.drawImage(that.assets.getImage('sand'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+          case 2:
+            that.ctx.drawImage(that.assets.getImage('sand'), 100, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+          case 3:
+            that.ctx.drawImage(that.assets.getImage('sand'), 200, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
 
+          //grass
+          case 4:
+            that.ctx.drawImage(that.assets.getImage('grass'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+          case 5:
+            that.ctx.drawImage(that.assets.getImage('grass'), 100, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+          case 6:
+            that.ctx.drawImage(that.assets.getImage('grass'), 200, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+
+          //vertical-sand-right
+          case 7:
+            that.ctx.drawImage(that.assets.getImage('vertical-sand-right'), 0, 0, 100, 44, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+          case 8:
+            that.ctx.drawImage(that.assets.getImage('vertical-sand-right'), 180, 0, 100, 44, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+
+          //side-sand-right-top
+          case 9:
+            that.ctx.drawImage(that.assets.getImage('side-sand-right-top'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+
+          //side-sand-left-top
+          case 10:
+            that.ctx.drawImage(that.assets.getImage('side-sand-left-top'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+
+          //side-sand-left
+          case 11:
+            that.ctx.drawImage(that.assets.getImage('side-sand-left'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+
+          //side-sand-right
+          case 12:
+            that.ctx.drawImage(that.assets.getImage('side-sand-right'), 0, 0, 100, 100, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+
+          //vertical-sand-left
+          case 13:
+            that.ctx.drawImage(that.assets.getImage('vertical-sand-left'), 0, 0, 95, 44, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+          case 14:
+            that.ctx.drawImage(that.assets.getImage('vertical-sand-left'), 175, 0, 100, 44, column*BLOCK_SIZE, row*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            break;
+        }
       }
     }
   }

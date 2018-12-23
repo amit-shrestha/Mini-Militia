@@ -1,16 +1,16 @@
-function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
+function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray, game){
   var BLOCK_SIZE = 30;
   var that = this;
   this.ctx = ctx;
   this.assets = assets;
   this.detectCollision = detectCollision;
   this.camera = camera;
-  this.key = {};
   this.property = {};
   this.handProperty = {};
   this.bulletArray = bulletArray;
+  this.game = game;
   this.mainInterval;
-  this.rightFace = true;
+  this.isFacingRight = true;
   this.defaultGun = true;
   this.spriteIndexX = 0;
   this.spriteIndexY = 0;
@@ -20,9 +20,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
   this.character = 'actor';
   this.speed = 5;
   this.kill = 0;
-  this.enableSwap = false;
-  this.handle = false;
-  this.gamePause = false;
+  this.angle;
   this.init = function(){
     that.property = {
       spriteX: [0, 95, 190, 285],
@@ -45,16 +43,10 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
       width: 120,
       height: 30
     }
-    that.key = {
-      W: false,
-      A: false,
-      S: true,
-      D: false
-    }
   }
 
   this.draw = function(){
-    if(that.rightFace) {
+    if(that.isFacingRight) {
       that.ctx.drawImage(that.assets.getImage('character-sprite-right'), that.property.spriteX[that.spriteIndexX], that.property.spriteY[that.spriteIndexY], that.property.spriteWidth, that.property.spriteHeight, that.property.canvasX, that.property.canvasY, that.property.characterWidth, that.property.characterHeight);
     }
     else{
@@ -69,7 +61,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     if(that.counter>5){
       that.counter = 0;
     }
-    if(that.key['W'] === true){
+    if(that.game.key['W'] === true){
       if(that.property.jetFuel>0){
         that.property.jetFuel -= 0.05;
         if(!that.detectCollision.detectGround(that.property, 87)){
@@ -86,16 +78,16 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
         that.spriteIndexY = 0;
         that.property.spriteHeight = 150;
         that.property.characterHeight = 120;
-        that.key['W']=false;
+        that.game.key['W']=false;
       }
-    }else if(that.key['S'] === true){
+    }else if(that.game.key['S'] === true){
       if(!that.detectCollision.detectGround(that.property, 83)){
         if(!that.detectCollision.detectBoundary(that.property, 83)){
           that.property.canvasY += that.speed+5;
         }
       }
     }
-    if(that.key['D'] === true){
+    if(that.game.key['D'] === true){
       if(!that.detectCollision.detectObstacles(that.property, 68)){
         if(!that.detectCollision.detectBoundary(that.property, 68)){
           that.property.canvasX += that.speed;
@@ -110,7 +102,7 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
           that.counter +=1;
         }
       }
-    }else if(that.key['A'] === true){
+    }else if(that.game.key['A'] === true){
       if(!that.detectCollision.detectObstacles(that.property, 65)) {
         if(!that.detectCollision.detectBoundary(that.property, 65)){
           that.property.canvasX -= that.speed;
@@ -169,47 +161,8 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     }
   }
 
-  this.keyPressed = function(event){
-    if(event.keyCode === 87){
-      that.key['W'] = true;
-    }
-    if(event.keyCode === 65){
-      that.key['A'] = true;
-    }
-    if(event.keyCode === 68){
-      that.key['D'] = true;
-    }
-    if(event.keyCode === 16){
-      that.enableSwap = true;
-    }
-    if(event.keyCode === 13){
-      that.gamePause = that.gamePause ? false:true;
-      console.log(that.gamePause);
-    }
-  }
-
-  this.keyReleased = function(event){
-    that.spriteIndexX = 0;
-    that.spriteIndexY = 0;
-    that.property.spriteHeight = 150;
-    that.property.characterHeight = 120;
-    if(event.keyCode === 87){
-      that.key['W'] = false;
-    }
-    if(event.keyCode === 65){
-      that.key['A'] = false;
-    }
-    if(event.keyCode === 68){
-      that.key['D'] = false;
-    }
-    if(event.keyCode === 16){
-      that.enableSwap = false;
-      that.handle = false;
-    }
-  }
-
   this.drawHand = function(){
-    if(that.rightFace){
+    if(that.isFacingRight){
       if(that.defaultGun){
         var hand = that.ctx.createPattern(that.assets.getImage('right-hand-with-gun'), 'no-repeat');
       }else{
@@ -243,32 +196,5 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray){
     }
   }
 
-  this.mouseMoved = function(event){
-    var offset = canvas.getBoundingClientRect();
-    var dx = event.clientX - (that.property.canvasX+that.handProperty.x)-offset.left;
-    var dy = event.clientY - (that.property.canvasY+that.handProperty.y)+20;
-    that.angle = Math.atan2(dy, dx);
-    var degree = that.angle*180/Math.PI;
-    if(degree<0 && degree<-90 || degree>0 && degree>90){
-      that.rightFace = false;
-    }else{
-      that.rightFace = true;
-    }
-  }
-
-  this.mouseClicked = function(event){
-    if(event.button === 0){
-      that.assets.getAudio('./audio/gunShot.mp3').play();
-      var bulletObj ={
-        ctx: that.ctx,
-        actor: that,
-        angle: that.angle,
-        face: that.rightFace
-      }
-      that.bulletArray.push(new Bullet(bulletObj));
-    }
-  }
-
   this.init();
-
 }

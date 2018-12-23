@@ -18,6 +18,15 @@ function Game(assets){
   this.botCounter = 0;
   this.weaponDropCounter = 0;
   this.gameOver = false;
+  this.enableSwap = false;
+  this.handle = false;
+  this.gamePause = false;
+  this.key = {
+    W: false,
+    A: false,
+    S: true,
+    D: false
+  }
   this.init = function(){
     this.canvas = document.getElementById('canvas');
     this.retry = document.getElementsByClassName('retry-btn')[0];
@@ -25,15 +34,15 @@ function Game(assets){
     this.ctx = this.canvas.getContext('2d');
     this.map = new Map(this.ctx, assets);
     this.detectCollision = new DetectCollision(that.ctx, that.map.mapArray);
-    this.camera = new Camera(this.ctx);
-    this.actor = new Actor(this.ctx, assets, this.detectCollision, this.camera, that.canvas, that.bulletArray);
+    this.camera = new Camera(that.ctx);
+    this.actor = new Actor(that.ctx, assets, that.detectCollision, that.camera, that.canvas, that.bulletArray, that);
     this.util = new Utils();
     this.addEventListeners();
     this.run();
   }
 
   this.run = function(){
-    if(that.actor.gamePause === true){
+    if(that.gamePause === true){
       that.info.style.display = 'block';
       document.getElementsByClassName('retry-btn')[0].style.display = 'none';
       document.getElementById('kill').innerHTML = that.actor.kill;
@@ -195,7 +204,7 @@ function Game(assets){
       for(var i=0;i<that.weaponArray.length;i++){
         if(that.actor.property.canvasX+that.actor.property.characterWidth >= that.weaponArray[i].weapon.canvasX && that.actor.property.canvasX+that.actor.property.characterWidth <= that.weaponArray[i].weapon.canvasX + that.weaponArray[i].weapon.characterWidth && that.actor.property.canvasY+that.actor.property.characterHeight >= that.weaponArray[i].weapon.canvasY && that.actor.property.canvasY+that.actor.property.characterHeight <= that.weaponArray[i].weapon.canvasY+that.weaponArray[i].weapon.characterHeight){
           that.ctx.drawImage(that.assets.getImage('swap'), 0, 0, 50, 50, that.actor.property.canvasX+20, that.actor.property.canvasY-30, 30, 30);
-          if(that.actor.enableSwap === true && that.actor.handle === false){
+          if(that.enableSwap === true && that.handle === false){
             that.swapGun(i);
             return;
           }
@@ -208,14 +217,14 @@ function Game(assets){
     var temp = that.actor.defaultGun;
     that.actor.defaultGun = that.weaponArray[i].weapon.defaultGun;
     that.weaponArray[i].weapon.defaultGun = temp;
-    that.actor.handle = true;
+    that.handle = true;
   }
 
   this.addEventListeners = function(){
-    document.addEventListener("keydown", this.actor.keyPressed);
-    document.addEventListener("keyup", this.actor.keyReleased);
-    document.addEventListener("mousemove", this.actor.mouseMoved);
-    document.addEventListener("mousedown", this.actor.mouseClicked);
+    document.addEventListener("keydown", this.keyPressed);
+    document.addEventListener("keyup", this.keyReleased);
+    document.addEventListener("mousemove", this.mouseMoved);
+    document.addEventListener("mousedown", this.mouseClicked);
     that.retry.addEventListener("click", function(){
       new Game(this.assets);
     });
@@ -223,9 +232,77 @@ function Game(assets){
   }
 
   this.removeEventListeners = function(){
-    document.removeEventListener("keydown", this.actor.keyPressed);
-    document.removeEventListener("mousemove", this.actor.mouseMoved);
-    document.removeEventListener("mousedown", this.actor.mouseClicked);
+    document.removeEventListener("keydown", this.keyPressed);
+    document.removeEventListener("mousemove", this.mouseMoved);
+    document.removeEventListener("mousedown", this.mouseClicked);
+  }
+
+  this.keyPressed = function(event){
+    switch(event.keyCode){
+      case 87:
+        that.key['W'] = true;
+        break;
+      case 65:
+        that.key['A'] = true;
+        break;
+      case 68:
+        that.key['D'] = true;
+        break;
+      case 16:
+        that.enableSwap = true;
+        break;
+      case 13:
+        that.gamePause = that.gamePause ? false:true;
+        break;
+    }
+  }
+
+  this.keyReleased = function(event){
+    that.actor.spriteIndexX = 0;
+    that.actor.spriteIndexY = 0;
+    that.actor.property.spriteHeight = 150;
+    that.actor.property.characterHeight = 120;
+    switch(event.keyCode){
+      case 87:
+        that.key['W'] = false;
+        break;
+      case 65:
+        that.key['A'] = false;
+        break;
+      case 68:
+        that.key['D'] = false;
+        break;
+      case 16:
+        that.enableSwap = false;
+        that.handle = false;
+        break;
+    }
+  }
+
+  this.mouseMoved = function(event){
+    var offset = canvas.getBoundingClientRect();
+    var dx = event.clientX - (that.actor.property.canvasX+that.actor.handProperty.x)-offset.left;
+    var dy = event.clientY - (that.actor.property.canvasY+that.actor.handProperty.y)+20;
+    that.actor.angle = Math.atan2(dy, dx);
+    var degree = that.actor.angle*180/Math.PI;
+    if(degree<0 && degree<-90 || degree>0 && degree>90){
+      that.actor.isFacingRight = false;
+    }else{
+      that.actor.isFacingRight = true;
+    }
+  }
+
+  this.mouseClicked = function(event){
+    if(event.button === 0){
+      that.assets.getAudio('./audio/gunShot.mp3').play();
+      var bulletObj ={
+        ctx: that.ctx,
+        actor: that.actor,
+        angle: that.actor.angle,
+        face: that.actor.isFacingRight
+      }
+      that.bulletArray.push(new Bullet(bulletObj));
+    }
   }
 
   this.init();

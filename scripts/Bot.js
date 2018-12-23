@@ -8,7 +8,7 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
   this.detectCollision = detectCollision;
   this.actor = actor;
   this.bulletArray = bulletArray;
-  this.rightFace = false;
+  this.isFacingRight = false;
   this.botProperty = {};
   this.weaponProperty = {};
   this.angle;
@@ -40,11 +40,11 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
 
   this.draw = function(){
     if((that.botProperty.canvasX - that.actor.property.canvasX)>=0){
-      that.rightFace = false;
+      that.isFacingRight = false;
     }else{
-      that.rightFace = true;
+      that.isFacingRight = true;
     }
-    if(that.rightFace){
+    if(that.isFacingRight){
       that.ctx.drawImage(that.assets.getImage('bot'), that.botProperty.spriteX[1], that.botProperty.spriteY, that.botProperty.spriteWidth, that.botProperty.spriteHeight, that.botProperty.canvasX, that.botProperty.canvasY, that.botProperty.characterWidth, that.botProperty.characterHeight);
     }else{
       that.ctx.drawImage(that.assets.getImage('bot'), that.botProperty.spriteX[0], that.botProperty.spriteY, that.botProperty.spriteWidth, that.botProperty.spriteHeight, that.botProperty.canvasX, that.botProperty.canvasY, that.botProperty.characterWidth, that.botProperty.characterHeight);
@@ -53,7 +53,7 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
   }
 
   this.drawWeapon = function(){
-    if(that.rightFace){
+    if(that.isFacingRight){
       var gun = that.ctx.createPattern(that.assets.getImage('enemy-gun-right'), 'no-repeat');
       that.ctx.save();
       that.ctx.beginPath();
@@ -107,7 +107,7 @@ function Bot(ctx, assets, detectCollision, actor, bulletArray){
           ctx: that.ctx,
           actor: that,
           angle: that.angle,
-          face: that.rightFace
+          face: that.isFacingRight
         }
         that.assets.getAudio('./audio/gunShot.mp3').play();
         that.bulletArray.push(new Bullet(bulletObj));

@@ -58,6 +58,7 @@ function Game(assets){
       that.showEnemyDirection();
       that.moveActor();
       that.drawFire();
+      that.checkHit();
       that.dropGun();
       that.findGun();
       that.checkHealth();
@@ -122,20 +123,30 @@ function Game(assets){
   }
 
   this.drawFire = function(){
-    if(that.bulletArray.length != 0){
+    if(that.bulletArray.length > 0){
       for(var i=0;i<that.bulletArray.length;i++){
         that.bulletArray[i].init();
         that.bulletArray[i].update();
+      }
+    }
+  }
+
+  this.checkHit = function(){
+    if(that.bulletArray.length > 0){
+      for(var i=0;i<that.bulletArray.length;i++){
         if(that.bulletArray[i].detectCollision(that.map.mapArray) === true){
           that.bulletArray.splice(i, 1);
           break;
         }
-
         if(that.bulletArray[i].actor.character === 'actor'){
           for(var j=0;j<that.botArray.length;j++){
             if(that.bulletArray[i].fX >= that.botArray[j].botProperty.canvasX && that.bulletArray[i].fX <= that.botArray[j].botProperty.canvasX+that.botArray[j].botProperty.characterWidth && that.bulletArray[i].fY >= that.botArray[j].botProperty.canvasY && that.bulletArray[i].fY <= that.botArray[j].botProperty.canvasY+that.botArray[j].botProperty.characterHeight){
+              if(that.bulletArray[i].actor.defaultGun){
+                that.botArray[j].botProperty.health -= 1;
+              }else{
+                that.botArray[j].botProperty.health -= 1.5;
+              }
               that.bulletArray.splice(i, 1);
-              that.botArray[j].botProperty.health -= 1;
               break;
             }
           }
@@ -148,7 +159,6 @@ function Game(assets){
             break;
           }
         }
-
       }
     }
   }

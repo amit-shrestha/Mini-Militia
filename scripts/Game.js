@@ -27,6 +27,10 @@ function Game(assets){
     S: true,
     D: false
   }
+  this.numOfBots = 5;
+  this.botGunDamage = 1;
+  this.defaultGunDamage = 1;
+  this.smgGunDamage = 1.5;
   this.init = function(){
     this.canvas = document.getElementById('canvas');
     this.retry = document.getElementsByClassName('retry-btn')[0];
@@ -69,7 +73,7 @@ function Game(assets){
   }
 
   this.generateBot = function(){
-    if(that.botArray.length<5 && that.botCounter%200 === 0){
+    if(that.botArray.length<that.numOfBots && that.botCounter%200 === 0){
       that.botArray.push(new Bot(that.ctx, assets, that.detectCollision, that.actor, that.bulletArray));
     }
     that.botCounter++;
@@ -142,9 +146,9 @@ function Game(assets){
           for(var j=0;j<that.botArray.length;j++){
             if(that.bulletArray[i].fX >= that.botArray[j].botProperty.canvasX && that.bulletArray[i].fX <= that.botArray[j].botProperty.canvasX+that.botArray[j].botProperty.characterWidth && that.bulletArray[i].fY >= that.botArray[j].botProperty.canvasY && that.bulletArray[i].fY <= that.botArray[j].botProperty.canvasY+that.botArray[j].botProperty.characterHeight){
               if(that.bulletArray[i].actor.defaultGun){
-                that.botArray[j].botProperty.health -= 1;
+                that.botArray[j].botProperty.health -= that.defaultGunDamage;
               }else{
-                that.botArray[j].botProperty.health -= 1.5;
+                that.botArray[j].botProperty.health -= that.smgGunDamage;
               }
               that.bulletArray.splice(i, 1);
               break;
@@ -154,7 +158,7 @@ function Game(assets){
           if(that.bulletArray[i].fX >= that.actor.property.canvasX && that.bulletArray[i].fY >= that.actor.property.canvasY && that.bulletArray[i].fY <= that.actor.property.canvasY+that.actor.property.canvasY+that.actor.property.characterHeight){
             that.bulletArray.splice(i, 1);
             if(that.actor.property.health>0){
-              that.actor.property.health -= 1;
+              that.actor.property.health -= that.botGunDamage;
             }
             break;
           }
@@ -199,7 +203,7 @@ function Game(assets){
         that.actor.property.health = 10;
         that.actor.property.jetFuel = 10;
         that.actor.property.numOfLives -= 1;
-        that.actor.defaultGun = true; 
+        that.actor.defaultGun = true;
         that.gameOver = false;
         that.addEventListeners();
         that.run();

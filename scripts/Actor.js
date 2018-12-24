@@ -19,8 +19,12 @@ function Actor(ctx, assets, detectCollision, camera, bulletArray, game){
   this.healthCounter = 0;
   this.character = 'actor';
   this.speed = 5;
+  this.gravity = 10;
   this.kill = 0;
   this.angle;
+  this.decreaseJetFuel = 0.05;
+  this.increaseJetFuel = 0.5;
+  this.increaseHealth = 0.5;
   this.init = function(){
     that.property = {
       spriteX: [0, 95, 190, 285],
@@ -63,7 +67,7 @@ function Actor(ctx, assets, detectCollision, camera, bulletArray, game){
     }
     if(that.game.key['W'] === true){
       if(that.property.jetFuel>0){
-        that.property.jetFuel -= 0.05;
+        that.property.jetFuel -= that.decreaseJetFuel;
         if(!that.detectCollision.detectGround(that.property, 87)){
           if(!that.detectCollision.detectBoundary(that.property, 87)){
             that.property.canvasY -= that.speed;
@@ -83,7 +87,7 @@ function Actor(ctx, assets, detectCollision, camera, bulletArray, game){
     }else if(that.game.key['S'] === true){
       if(!that.detectCollision.detectGround(that.property, 83)){
         if(!that.detectCollision.detectBoundary(that.property, 83)){
-          that.property.canvasY += that.speed+5;
+          that.property.canvasY += that.gravity;
         }
       }
     }
@@ -127,18 +131,21 @@ function Actor(ctx, assets, detectCollision, camera, bulletArray, game){
     that.ctx.drawImage(that.assets.getImage('num-of-lives'), 0, that.property.numOfLives * 35 - 35, 80, 35, marginLeft + 1190, 30, 30, 15);
     that.ctx.drawImage(that.assets.getImage('status'), marginLeft+50, 10, 20, 50);
     that.ctx.lineWidth = 8;
+
     that.ctx.beginPath();
     that.ctx.moveTo(marginLeft+80, 15);
     that.ctx.lineTo(marginLeft+80+that.property.health*10, 15);
     that.ctx.strokeStyle = 'green';
     that.ctx.stroke();
     that.ctx.closePath();
+
     that.ctx.beginPath();
     that.ctx.moveTo(marginLeft+80, 40);
     that.ctx.lineTo(marginLeft+80+that.property.jetFuel*10, 40);
     that.ctx.strokeStyle = 'blue';
     that.ctx.stroke();
     that.ctx.closePath();
+
     that.ctx.font = '30px Arial';
     that.ctx.fontWeight = 'bold';
     that.ctx.fillStyle = 'white';
@@ -147,12 +154,12 @@ function Actor(ctx, assets, detectCollision, camera, bulletArray, game){
 
   this.updateHealthAndJet = function(){
     if(that.property.health<10 && that.healthCounter%100 == 0 && that.property.numOfLives>1){
-      that.property.health += 0.5;
+      that.property.health += that.increaseHealth;
     }
     that.healthCounter++;
 
     if(that.property.jetFuel<10 && that.jetFuelCounter==20){
-      that.property.jetFuel +=0.5;
+      that.property.jetFuel += that.increaseJetFuel;
     }
     if(that.jetFuelCounter<20){
       that.jetFuelCounter+=1;

@@ -5,7 +5,6 @@ function Assets(){
   this.canvas = document.getElementById('canvas');
   this.ctx = this.canvas.getContext('2d');
 
-  this.loadingAudio = new Audio('./audio/loadAudio.aac');
   var that = this;
   this.images = {};
   this.audios = {};
@@ -17,11 +16,6 @@ function Assets(){
   this.startImage.onload = function(){
     that.ctx.drawImage(that.startImage, 0, 0, that.container.offsetWidth, that.canvas.offsetHeight);
   }
-
-
-  setTimeout(() => that.loadingAudio.play())
-
-
 
   this.init = function()
   {
@@ -51,8 +45,6 @@ function Assets(){
 
     this.loadInterval = setInterval(function(){
       if(that.imagesLoaded == checkLoadedAssets(that.images)){
-        that.loadingAudio.pause();
-        delete that.loadingAudio;
         clearInterval(that.loadInterval);
         new Game(assets);
       }

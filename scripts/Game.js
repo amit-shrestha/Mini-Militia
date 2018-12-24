@@ -35,7 +35,7 @@ function Game(assets){
     this.map = new Map(this.ctx, assets);
     this.detectCollision = new DetectCollision(that.ctx, that.map.mapArray);
     this.camera = new Camera(that.ctx);
-    this.actor = new Actor(that.ctx, assets, that.detectCollision, that.camera, that.canvas, that.bulletArray, that);
+    this.actor = new Actor(that.ctx, assets, that.detectCollision, that.camera, that.bulletArray, that);
     this.util = new Utils();
     this.addEventListeners();
     this.run();
@@ -199,6 +199,7 @@ function Game(assets){
         that.actor.property.health = 10;
         that.actor.property.jetFuel = 10;
         that.actor.property.numOfLives -= 1;
+        that.actor.defaultGun = true; 
         that.gameOver = false;
         that.addEventListeners();
         that.run();

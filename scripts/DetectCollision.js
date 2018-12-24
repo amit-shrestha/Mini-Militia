@@ -52,6 +52,12 @@ function DetectCollision(ctx, mapArray){
     if(that.mapArray[yPos] != undefined){
       if(that.mapArray[yPos][xPos] != undefined){
         switch(that.mapArray[yPos][xPos]){
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+          case 5:
+          case 6:
           case 7:
           case 8:
           case 9:
@@ -64,6 +70,12 @@ function DetectCollision(ctx, mapArray){
             break;
         }
         switch(that.mapArray[yPosFoot-1][xPos]){
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+          case 5:
+          case 6:
           case 7:
           case 8:
           case 9:
@@ -76,6 +88,12 @@ function DetectCollision(ctx, mapArray){
             break;
         }
         switch(that.mapArray[yPosBody][xPos]){
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+          case 5:
+          case 6:
           case 7:
           case 8:
           case 9:

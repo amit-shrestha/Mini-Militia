@@ -1,4 +1,4 @@
-function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray, game){
+function Actor(ctx, assets, detectCollision, camera, bulletArray, game){
   var BLOCK_SIZE = 30;
   var that = this;
   this.ctx = ctx;
@@ -146,8 +146,8 @@ function Actor(ctx, assets, detectCollision, camera, canvas, bulletArray, game){
   }
 
   this.updateHealthAndJet = function(){
-    if(that.property.health<10 && that.healthCounter%50 == 0 && that.property.numOfLives>1){
-      that.property.health += 1;
+    if(that.property.health<10 && that.healthCounter%100 == 0 && that.property.numOfLives>1){
+      that.property.health += 0.5;
     }
     that.healthCounter++;
 

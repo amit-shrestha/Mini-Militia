@@ -1,5 +1,4 @@
 function DetectCollision(ctx, mapArray){
-  var BLOCK_SIZE = 30;
   var that = this;
   this.ctx = ctx;
   this.mapArray = mapArray;

@@ -1,5 +1,4 @@
 function Actor(ctx, assets, detectCollision, camera, bulletArray, game){
-  var BLOCK_SIZE = 30;
   var that = this;
   this.ctx = ctx;
   this.assets = assets;
@@ -25,6 +24,7 @@ function Actor(ctx, assets, detectCollision, camera, bulletArray, game){
   this.decreaseJetFuel = 0.05;
   this.increaseJetFuel = 0.5;
   this.increaseHealth = 0.5;
+
   this.init = function(){
     that.property = {
       spriteX: [0, 95, 190, 285],

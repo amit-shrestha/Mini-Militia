@@ -1,5 +1,4 @@
 function Weapon(ctx, detectCollision, assets){
-  var BLOCK_SIZE= 30;
   var that = this;
 
   this.ctx = ctx;

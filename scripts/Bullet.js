@@ -1,6 +1,5 @@
 function Bullet(bulletParameters){
   var BULLET_SPEED;
-  var BLOCK_SIZE = 30;
   var BULLET_OFFSET = 80;
   var BULLET_SIZE = 20;
   var that = this;

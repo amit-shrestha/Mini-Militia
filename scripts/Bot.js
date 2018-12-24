@@ -1,6 +1,5 @@
 function Bot(ctx, assets, detectCollision, actor, bulletArray){
   this.util = new Utils();
-  var BLOCK_SIZE = 30;
   var BOT_SPEED = this.util.getRandomNumber(1, 4);
   var that = this;
   this.ctx = ctx;

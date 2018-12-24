@@ -1,5 +1,4 @@
 function Game(assets){
-  var BLOCK_SIZE = 30;
   var that = this;
   this.retry;
   this.canvas;
@@ -31,6 +30,8 @@ function Game(assets){
   this.botGunDamage = 1;
   this.defaultGunDamage = 1;
   this.smgGunDamage = 1.5;
+  this.totalWeaponDrop = 3;
+
   this.init = function(){
     this.canvas = document.getElementById('canvas');
     this.retry = document.getElementsByClassName('retry-btn')[0];
@@ -231,19 +232,19 @@ function Game(assets){
       that.weaponArray.push(new Weapon(that.ctx, that.detectCollision, that.assets));
     }
     that.weaponDropCounter++;
-    if(that.weaponArray.length !=0){
+    if(that.weaponArray.length > 0){
       for(var i=0;i<that.weaponArray.length;i++){
         that.weaponArray[i].draw();
         that.weaponArray[i].drop();
       }
-      if(that.weaponArray.length > 3){
+      if(that.weaponArray.length > that.totalWeaponDrop){
         that.weaponArray.shift();
       }
     }
   }
 
   this.findGun = function(){
-    if(that.weaponArray.length != 0){
+    if(that.weaponArray.length > 0){
       for(var i=0;i<that.weaponArray.length;i++){
         if(that.actor.property.canvasX+that.actor.property.characterWidth >= that.weaponArray[i].weapon.canvasX && that.actor.property.canvasX+that.actor.property.characterWidth <= that.weaponArray[i].weapon.canvasX + that.weaponArray[i].weapon.characterWidth && that.actor.property.canvasY+that.actor.property.characterHeight >= that.weaponArray[i].weapon.canvasY && that.actor.property.canvasY+that.actor.property.characterHeight <= that.weaponArray[i].weapon.canvasY+that.weaponArray[i].weapon.characterHeight){
           that.ctx.drawImage(that.assets.getImage('swap'), 0, 0, 50, 50, that.actor.property.canvasX+20, that.actor.property.canvasY-30, 30, 30);

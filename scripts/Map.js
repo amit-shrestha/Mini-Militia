@@ -1,5 +1,4 @@
 function Map(ctx, assets){
-  var BLOCK_SIZE = 30;
   var that = this;
   this.ctx = ctx;
   this.assets = assets;

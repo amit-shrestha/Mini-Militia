@@ -1,4 +1,5 @@
 var assets;
+var BLOCK_SIZE = 30;
 function Assets(){
   this.container = document.getElementsByClassName('container')[0];
   this.container.style.height = window.innerHeight+'px';
@@ -7,7 +8,6 @@ function Assets(){
 
   var that = this;
   this.images = {};
-  this.audios = {};
   this.imagesLoaded = 0;
   this.loadInterval;
 
@@ -41,7 +41,6 @@ function Assets(){
     this.loadImage('status', './images/status.png');
     this.loadImage('swap', './images/swap.png');
     this.loadImage('default-gun', './images/default-gun.png');
-    this.loadAudio('gun-shot', './audio/gunShot.mp3');
 
     this.loadInterval = setInterval(function(){
       if(that.imagesLoaded == checkLoadedAssets(that.images)){
@@ -62,12 +61,6 @@ function Assets(){
 
   this.getImage = function(filename){
     return that.images[filename];
-  }
-
-  this.loadAudio = function(filename, source){
-    var audio = new Audio();
-    audio.src = source;
-    that.audios[filename] = audio;
   }
 
   this.getAudio = function(source){

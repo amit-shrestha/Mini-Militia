@@ -18,8 +18,8 @@ function Game(assets){
   this.weaponDropCounter = 0;
   this.gameOver = false;
   this.enableSwap = false;
-  this.handle = false;
-  this.gamePause = false;
+  this.swapHandle = false;
+  this.isGamePaused = false;
   this.key = {
     W: false,
     A: false,
@@ -47,7 +47,7 @@ function Game(assets){
   }
 
   this.run = function(){
-    if(that.gamePause === true){
+    if(that.isGamePaused === true){
       that.info.style.display = 'block';
       document.getElementsByClassName('retry-btn')[0].style.display = 'none';
       document.getElementById('kill').innerHTML = that.actor.kill;
@@ -248,7 +248,7 @@ function Game(assets){
       for(var i=0;i<that.weaponArray.length;i++){
         if(that.actor.property.canvasX+that.actor.property.characterWidth >= that.weaponArray[i].weapon.canvasX && that.actor.property.canvasX+that.actor.property.characterWidth <= that.weaponArray[i].weapon.canvasX + that.weaponArray[i].weapon.characterWidth && that.actor.property.canvasY+that.actor.property.characterHeight >= that.weaponArray[i].weapon.canvasY && that.actor.property.canvasY+that.actor.property.characterHeight <= that.weaponArray[i].weapon.canvasY+that.weaponArray[i].weapon.characterHeight){
           that.ctx.drawImage(that.assets.getImage('swap'), 0, 0, 50, 50, that.actor.property.canvasX+20, that.actor.property.canvasY-30, 30, 30);
-          if(that.enableSwap === true && that.handle === false){
+          if(that.enableSwap === true && that.swapHandle === false){
             that.swapGun(i);
           }
         }
@@ -260,7 +260,7 @@ function Game(assets){
     var temp = that.actor.defaultGun;
     that.actor.defaultGun = that.weaponArray[i].weapon.defaultGun;
     that.weaponArray[i].weapon.defaultGun = temp;
-    that.handle = true;
+    that.swapHandle = true;
   }
 
   this.addEventListeners = function(){
@@ -295,7 +295,7 @@ function Game(assets){
         that.enableSwap = true;
         break;
       case 13:
-        that.gamePause = that.gamePause ? false:true;
+        that.isGamePaused = that.isGamePaused ? false:true;
         break;
     }
   }
@@ -317,7 +317,7 @@ function Game(assets){
         break;
       case 16:
         that.enableSwap = false;
-        that.handle = false;
+        that.swapHandle = false;
         break;
     }
   }
